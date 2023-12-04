@@ -20,15 +20,7 @@ async function main() {
         }
     })
 
-    console.log(product)
-
-    // const rating=await prisma.rating.upsert({
-    //     create:{
-    //         rate:5,
-    //         count:1,
-    //         productId:product.id
-    //     }
-    // })
+   
 }
 main()
   .then(async () => {
