@@ -2,9 +2,10 @@ import {FC} from 'react'
 import { DataTable } from './data-table'
 import { columns } from './column'
 
-import {z} from 'zod'
 import { Product } from '@/type/product'
 import prisma from '../../../../prisma/client'
+import { Button } from '@/components/ui/button'
+import AddProductModal from '@/components/AddProductModal'
 
 
 
@@ -100,6 +101,7 @@ const page:FC<pageProps>=async ({searchParams})=>{
     <main
       className='md:container'
     >
+      <AddProductModal/>
       <div>
         <DataTable columns={columns} data={products} pageCount={Math.ceil(allProductLength/10)} />
       </div>

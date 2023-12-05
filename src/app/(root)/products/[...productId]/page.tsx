@@ -1,5 +1,9 @@
 import {FC} from 'react'
 import prisma from '../../../../../prisma/client'
+import { ErrorBoundary } from 'next/dist/client/components/error-boundary'
+
+import error from './error.js'
+
 
 interface pageProps {
  params:{
@@ -14,10 +18,17 @@ const page:FC<pageProps>=async({params})=>{
          id:parseInt(productId)
       }
    })
+
+
+   if(!product){
+      throw new Error("Invalid Product")
+   }
+  
+
  return(
-    <div>
-       {product?.id}
-    </div>
+   <main>
+      
+   </main>
 )}
 
 export default page

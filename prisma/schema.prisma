@@ -55,7 +55,7 @@ model Rating {
   id        Int     @id @default(autoincrement())
   rate      Float
   count     Int
-  product   Product @relation(fields: [productId], references: [id])
+  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
   productId Int     @unique
 }
 
@@ -69,4 +69,9 @@ model Order {
   orderItem CartItem[]
   phone     String     @default("")
   address   String     @default("")
+}
+
+model Billboard {
+  id        Int        @id @default(autoincrement())
+  imageUrl String
 }

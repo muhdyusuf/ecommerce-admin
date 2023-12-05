@@ -38,14 +38,26 @@ export const columns: ColumnDef<Product>[] = [
     },
   },
   {
+    accessorKey: "Date",
+    header: ()=><div>Date</div>,
+    cell:({row})=>{
+      const product = row.original
+      return(
+        <div>
+          {new Date(product.createdAt).toDateString()}
+        </div>
+      )
+    },
+  },
+  {
     accessorKey: "price",
-    header: () => <div className="text-right">Amount</div>,
+    header: () => <div className="text-right">Price</div>,
     cell: ({ row }) => {
-      const amount = parseFloat(row.getValue("price"))
+      const price = parseFloat(row.getValue("price"))
       const formatted = new Intl.NumberFormat("en-GB", {
         style: "currency",
         currency: "MYR",
-      }).format(amount)
+      }).format(price)
  
       return <div className="text-right font-medium">{formatted}</div>
     },

@@ -1,16 +1,11 @@
 import {z} from 'zod'
 
 export const productSchema=z.object({
-    id:z.number(),
-    name:z.string(),
-    description:z.string(),
-    stock:z.number().positive(),
-    price:z.number().positive(),
-    category:z.string(),
-    imageUrls:z.array(z.string()),
-    rating:z.object({
-        rate:z.number(),
-        count:z.number()
-    })
-
+    name:z.string().min(5).max(50),
+    description:z.string().min(20).max(200),
+    stock:z.preprocess(val=>Number(val),z.number().positive()),
+    price:z.preprocess(val=>Number(val),z.number().positive()),
+    category:z.string().optional(),
+    imageUrls:z.array(z.string()).optional(),
+    
 })
