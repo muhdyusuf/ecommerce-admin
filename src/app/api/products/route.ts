@@ -42,3 +42,68 @@ export async function POST(req: NextRequest, res: NextResponse<Data>) {
    }
   
 }
+
+
+export async function PATCH(req: NextRequest, res: NextResponse<Data>) {
+    const {product}=await req.json()
+    console.log(product)
+    if(!productSchema.safeParse(product).success)return NextResponse.json({
+    },{status:400})
+   try {
+    const _product=await prisma.product.update({
+       where:{
+        id:product.id
+       },
+       data:{
+        ...product,
+        updatedAt:new Date().toISOString(),
+        rating:{
+            update:{
+                ...product.rating
+            }
+        }
+       }
+        
+    })
+    console.log(_product)
+    return NextResponse.json({
+        data:_product
+    },{status:200})
+   } catch (error) {
+    console.log(error)
+    return NextResponse.json({
+        error:{
+            message:"server error"
+        }
+    },{status:500})
+   }
+  
+}
+export async function DELETE(req: NextRequest, res: NextResponse<Data>) {
+    const {product}=await req.json()
+
+    console.log(product,"product")
+   
+    // if(!productSchema.safeParse(product).success)return NextResponse.json({
+    // },{status:404})
+   try {
+    const _product=await prisma.product.delete({
+        where:{
+            id:product.id
+        }
+    })
+
+
+    return NextResponse.json({
+        data:product
+    },{status:200})
+   } catch (error) {
+    console.log(error)
+    return NextResponse.json({
+        error:{
+            message:"server error"
+        }
+    },{status:500})
+   }
+  
+}

@@ -14,6 +14,9 @@ import { Product } from "@/type/product"
 
 import { ArrowUpDown,MoreHorizontal } from "lucide-react"
 import Link from "next/link"
+import DeleteAlertDialog from "@/components/DeleteAlertDialog"
+import { AlertDialog, AlertDialogTrigger } from "@/components/ui/alert-dialog"
+import { useState } from "react"
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
 
@@ -44,7 +47,7 @@ export const columns: ColumnDef<Product>[] = [
       const product = row.original
       return(
         <div>
-          {new Date(product.createdAt).toDateString()}
+          {new Date(product.updatedAt).toDateString()}
         </div>
       )
     },
@@ -66,8 +69,17 @@ export const columns: ColumnDef<Product>[] = [
     id: "actions",
     cell: ({ row }) => {
       const product = row.original
+      const [open, setOpen] = useState(false)
+      function handleOpen(){
+        setOpen(!open)
+      }
  
       return (
+        <AlertDialog
+          open={open}
+          onOpenChange={setOpen}
+        >
+
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="ghost" className="h-8 w-8 p-0">
@@ -81,17 +93,29 @@ export const columns: ColumnDef<Product>[] = [
             <DropdownMenuItem>
               <Link
                 href={`${process.env.NEXT_PUBLIC_APP_URL}/products/${product.id}`}
-              >
+                >
                 {process.env.NEXT_PUBLIC_APP_URL}
               </Link>
             </DropdownMenuItem>
+
+            <AlertDialogTrigger asChild>
+               <DropdownMenuItem>
+                  Delete product
+              </DropdownMenuItem>
+            </AlertDialogTrigger>
+
+          
+
             <DropdownMenuItem
               onClick={() => navigator.clipboard.writeText(product.id.toString())}
             >
               Copy Product Id
             </DropdownMenuItem>
           </DropdownMenuContent>
+          <DeleteAlertDialog product={product} close={()=>setOpen(false)}/>
         </DropdownMenu>
+       
+      </AlertDialog>
       )
     },
   },

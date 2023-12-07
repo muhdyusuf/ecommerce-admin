@@ -72,6 +72,6 @@ model Order {
 }
 
 model Billboard {
-  id        Int        @id @default(autoincrement())
+  id       Int    @id @default(autoincrement())
   imageUrl String
 }

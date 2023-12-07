@@ -64,13 +64,21 @@ type Payment = {
   async function getProducts(page:number|undefined=0): Promise<Product[]> {
     const products=await prisma.product.findMany({
       where:{
-        rating:{isNot:null}
+        rating:{isNot:null},    
       },
-      include:{
+      select:{
+        id:true,
+        name:true,
+        price:true,
+        description:true,
+        stock:true,
+        updatedAt:true,
+        imageUrls:true,
         rating:{
            select:{
             rate:true,
             count:true
+            
            }
         }     
       },
@@ -91,10 +99,12 @@ interface pageProps {
   
 
 const page:FC<pageProps>=async ({searchParams})=>{
+  
   const {page}=searchParams
   const allProductLength=await prisma.product.count()
   const products= await getProducts(page)
-  console.log(process.env.ADMIN_APP_URL)
+
+
 
 
  return(
