@@ -1,6 +1,7 @@
 import {FC} from 'react'
 import { DataTable } from './data-table'
 import { columns } from './column'
+import prisma from '../../../../prisma/client'
 
 interface pageProps {
  
@@ -80,14 +81,15 @@ type Payment = {
   
 
 const page:FC<pageProps>=async ({})=>{
-  const data= await getData()
+  let orders= await prisma.order.findMany()
+ 
 
  return(
     <main
       className='md:container'
     >
       <div>
-        <DataTable columns={columns} data={data} />
+        <DataTable columns={columns} data={orders} />
       </div>
     </main>
 )}

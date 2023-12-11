@@ -63,6 +63,9 @@ type Payment = {
 
   async function getProducts(page:number|undefined=0): Promise<Product[]> {
     const products=await prisma.product.findMany({
+      orderBy:{
+        updatedAt:"desc"
+      },
       where:{
         rating:{isNot:null},    
       },
@@ -83,7 +86,8 @@ type Payment = {
         }     
       },
       take:10,
-      skip:page
+      skip:page,
+      
     })
    
   

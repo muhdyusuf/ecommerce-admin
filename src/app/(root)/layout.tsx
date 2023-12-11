@@ -1,5 +1,7 @@
 import {ReactNode,FC} from 'react'
 import type { Metadata } from 'next'
+import Navbar from '@/components/Navbar'
+
 
 export const metadata: Metadata = {
     title: 'Create Next App',
@@ -10,9 +12,11 @@ interface layoutProps {
     children:ReactNode
 }
 
-const layout:FC<layoutProps>=({children})=>{
+const layout:FC<layoutProps>=async({children})=>{
+    
  return(
     <>
+        <Navbar />
         <main
             className='p-2 md:container'
         >

@@ -32,6 +32,7 @@ import { Input } from './ui/input'
 import { Textarea } from './ui/textarea'
 import { register } from 'module'
 import { Loader2 } from 'lucide-react'
+import ImageUploadInput from './ImageUploadInput'
 interface addProductProps {
  
 }
@@ -41,6 +42,7 @@ type AddProductForm=z.infer<typeof productSchema>
 const AddProductModal:FC<addProductProps>=({})=>{
 
   const [loading, setLoading] = useState(false)
+  const [imageUrls, setimageUrls] = useState<string[]>([""])
 
     const form=useForm<AddProductForm>({
       resolver:zodResolver(productSchema),
@@ -49,19 +51,28 @@ const AddProductModal:FC<addProductProps>=({})=>{
         category:"all",
         price:1,
         stock:1,
-        description:""
+        description:"",
+   
       }
     })
 
 
   async function onSubmit(values:AddProductForm){
-    console.log("submit")
+    console.log(values)
+    const filteredImageUrls=imageUrls.filter(url=>url&&url!=="")
+    if(filteredImageUrls.length===0){
+      form.setError("imageUrls",{
+        message:"product must have atleast 1 image"
+      })
+      return
+    }
     setLoading(true)
+    
 
       try {
         const product=await fetch(`${process.env.NEXT_PUBLIC_APP_URL}/api/products`,{
           method:"POST",
-          body:JSON.stringify({product:values})
+          body:JSON.stringify({product:{...values,imageUrls:filteredImageUrls}})
         })
         if(product.status===200){
           setLoading(false)
@@ -78,6 +89,29 @@ const AddProductModal:FC<addProductProps>=({})=>{
 
   console.log(form.formState.errors)
 
+  function handleImageChange(url:string,imageIndex:number){
+    const _imageUrls=[...imageUrls]
+    // console.log(url,imageIndex)
+    // if(url===""&&imageUrls.length>1){
+    //   _imageUrls.splice(imageIndex,1)
+    //   setimageUrls(_imageUrls)
+    //   return
+    // }
+
+
+
+
+    // if(_imageUrls.length<=3&&_imageUrls[imageIndex+1]!==""){
+    //   _imageUrls[imageIndex]=url
+    //   _imageUrls.push("")
+    // }
+    // else{
+      _imageUrls[imageIndex]=url
+    // }
+    
+    setimageUrls(_imageUrls)
+  }
+  console.log(form.watch("imageUrls"))
 
 
  return(
@@ -92,15 +126,62 @@ const AddProductModal:FC<addProductProps>=({})=>{
       Add Product
     </Button>
    </DialogTrigger>
-   <DialogContent>
+   <DialogContent
+    className='relative'
+   >
      <DialogHeader>
        <DialogTitle>Are you sure absolutely sure?</DialogTitle>
+     </DialogHeader>
+     <form
+      className='w-full flex flex-col overflow-hidden'
+     >
+      <div
+          className='w-full flex flex-nowrap gap-4 overflow-scroll'
+          >
+            <div
+              className='min-w-[150px]'
+              >
+              <ImageUploadInput
+                key={"imageUpload0"}
+                onImageUploaded={(url)=>handleImageChange(url,0)}
+                />
+            </div>
+
+            <div
+              className='min-w-[150px]'
+              >
+              <ImageUploadInput
+                key={"imageUpload1"}
+                onImageUploaded={(url)=>handleImageChange(url,1)}
+                />
+            </div>
+            <div
+              className='min-w-[150px]'
+              >
+              <ImageUploadInput
+                key={"imageUpload2"}
+                onImageUploaded={(url)=>handleImageChange(url,2)}
+              />
+            </div>
+            <div
+              className='min-w-[150px]'
+              >
+              <ImageUploadInput
+                key={"imageUpload3"}
+                onImageUploaded={(url)=>handleImageChange(url,3)}
+                />
+            </div>
+        </div>
+        <p>
+          {form.formState.errors.imageUrls?.message}
+        </p>
+       </form>
        <Form
         {...form}
-       >
+        >
         <form
           onSubmit={form.handleSubmit(onSubmit)}
-        >
+          >
           <FormField
             control={form.control}
             name="name"
@@ -198,8 +279,6 @@ const AddProductModal:FC<addProductProps>=({})=>{
         </Button>
         </form>
        </Form>
-       
-     </DialogHeader>
    </DialogContent>
  </Dialog>
 )}

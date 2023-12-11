@@ -69,6 +69,7 @@ model Order {
   orderItem CartItem[]
   phone     String     @default("")
   address   String     @default("")
+  emailAddress String
 }
 
 model Billboard {

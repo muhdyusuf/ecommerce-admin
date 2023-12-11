@@ -4,6 +4,7 @@ import prisma from '../../../../../prisma/client'
 
 import { Card } from '@/components/ui/card'
 import { Product } from '@/type/product'
+import Image from 'next/image'
 
 // async function getProduct(id:number){
 //    "use server"
@@ -33,6 +34,7 @@ interface pageProps {
 const page:FC<pageProps>=({params})=>{
 
    const {productId}=params
+   console.log(productId)
 
    const [product, setProduct] = useState<Product|null>(null)
 
@@ -43,7 +45,7 @@ const page:FC<pageProps>=({params})=>{
           const {data:{product}}=await res.json()
          setProduct(product)
       } catch (error) {
-       
+       console.log(error)
       }
      
    }
@@ -52,6 +54,7 @@ const page:FC<pageProps>=({params})=>{
      getProduct()
    },[])
 
+   console.log(product)
    
 
   
@@ -62,6 +65,16 @@ const page:FC<pageProps>=({params})=>{
          <h1>
             {product?.name}
          </h1>
+         {product.imageUrls?.map(url=>(
+            <Image
+               width={400}
+               height={400}
+               alt="prodcutImage"
+               src={url}
+               className='w-[300px] aspect-square object-contain
+               '
+            />
+         ))}
       </Card>)}
    </main>
 )}
