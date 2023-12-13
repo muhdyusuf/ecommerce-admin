@@ -15,6 +15,21 @@ export async function POST(req: NextRequest, res: NextResponse<Data>) {
     const _product=await prisma.product.create({
         data:{
             ...product,
+            colour:{
+                connect:{
+                    id:parseInt(product.colour)
+                }
+            },
+            size:{
+                connect:{
+                    id:parseInt(product.size)
+                }
+            },
+            category:{
+                connect:{
+                    id:parseInt(product.category)
+                }
+            },
             rating:{
                 create:{
                     rate:5,

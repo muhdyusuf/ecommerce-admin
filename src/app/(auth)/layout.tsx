@@ -17,12 +17,14 @@ export default async function layout({
 }) {
   const supabase=createServerComponentClient({cookies})
     const {data:{session}}=await supabase.auth.getSession()
-
+    console.log(session)
     if(session){
         redirect("/")
     }
     
   return (
+    <>
     {children}
+    </>
   )
 }

@@ -20,9 +20,11 @@ export default async function RootLayout({
   const supabase=createServerComponentClient({cookies})
     const {data:{session}}=await supabase.auth.getSession()
 
-    if(!session){
-        redirect("/signIn")
-    }
+
+    console.log(session)
+    // if(!session){
+    //     redirect("/signIn")
+    // }
     
   return (
     <html lang="en">

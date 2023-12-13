@@ -30,12 +30,42 @@ model Product {
   rating      Rating?
   price       Int
   description String
-  category    String
+  category    Category  @relation(fields: [categoryId], references: [id])
+  categoryId  Int
   stock       Int
   imageUrls   String[]
   cartItem    CartItem?
   createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @default(now()) @updatedAt
+  updatedAt   DateTime  @updatedAt
+  size        Size      @relation(fields: [sizeId], references: [id])
+  sizeId      Int
+  colour      Colour    @relation(fields: [colourId], references: [id])
+  colourId    Int
+}
+
+model Size {
+  id        Int       @id @default(autoincrement())
+  name      String
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  products  Product[]
+}
+
+model Category {
+  id        Int       @id @default(autoincrement())
+  name      String
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  products  Product[]
+}
+
+model Colour {
+  id        Int       @id @default(autoincrement())
+  name      String
+  value     String
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  products  Product[]
 }
 
 model CartItem {
@@ -46,7 +76,7 @@ model CartItem {
   user      User     @relation(fields: [userId], references: [id])
   userId    Int
   createdAt DateTime @default(now())
-  updatedAt DateTime @default(now()) @updatedAt
+  updatedAt DateTime @updatedAt
   order     Order?   @relation(fields: [orderId], references: [id])
   orderId   Int?     @unique
 }
@@ -60,19 +90,22 @@ model Rating {
 }
 
 model Order {
-  id        Int        @id @default(autoincrement())
-  createdAt DateTime   @default(now())
-  updatedAt DateTime   @default(now()) @updatedAt
-  status    String
-  user      User       @relation(fields: [userId], references: [id])
-  userId    Int        @unique
-  orderItem CartItem[]
-  phone     String     @default("")
-  address   String     @default("")
+  id           Int        @id @default(autoincrement())
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+  status       String
+  user         User       @relation(fields: [userId], references: [id])
+  userId       Int        @unique
+  orderItem    CartItem[]
+  phone        String     @default("")
+  address      String     @default("")
   emailAddress String
 }
 
 model Billboard {
-  id       Int    @id @default(autoincrement())
-  imageUrl String
+  id        Int      @id @default(autoincrement())
+  imageUrl  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  label     String
 }

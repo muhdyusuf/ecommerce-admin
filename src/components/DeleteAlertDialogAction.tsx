@@ -13,44 +13,32 @@ import {
 import { Button } from './ui/button'
 import { Product } from '@/type/product'
 import { Loader2 } from 'lucide-react'
-import { useRouter } from 'next/navigation'
 
-interface DeleteAlertDialogProps {
- product:Product
+interface DeleteAlertDialogActionsProps {
+ data:{
+    id:number,
+    name:string
+ }
  close:()=>void
-
+ action:(id:number)=>Promise<any>
 }
 
-const DeleteAlertDialog:FC<DeleteAlertDialogProps>=({product,close})=>{
+const DeleteAlertDialogAction:FC<DeleteAlertDialogActionsProps>=({data,close,action})=>{
     const [loading, setLoading] = useState<boolean>(false)
     const [deleted, setDeleted] = useState<boolean>(false)
-    const router=useRouter()
     async function handleDelete(){
         setLoading(true)
         try {
-            const res=await fetch(`${process.env.NEXT_PUBLIC_APP_URL}/api/products`,{
-                method:"PATCH",
-                body:JSON.stringify({product:{
-                    ...product
-                }})
-            })
-            
-          
-           
-            if(res.status===200){
-                const {data:{id}}=await res.json()
-
-                console.log(id)
-                setDeleted(true)
-                setTimeout(close,2000)
+          const res= await action(data.id)
+          if(res){
+            setDeleted(true)
+          }
                 
-            }
         } catch (error) {
             setDeleted(false)
         }
         finally{
             setLoading(false)
-            router.refresh()
         }
         
 
@@ -63,14 +51,14 @@ const DeleteAlertDialog:FC<DeleteAlertDialogProps>=({product,close})=>{
             <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
             <AlertDialogDescription>
                 This action cannot be undone. This will permanently delete 
-                and remove {product.name} from the database.
+                and remove {data.name} from the database.
             </AlertDialogDescription>
             </>
         ):(
             <>
             <AlertDialogTitle>Deleted</AlertDialogTitle>
             <AlertDialogDescription>
-                {product.name} deleted from the database.
+                {data.name} deleted from the database.
             </AlertDialogDescription>
             </>
         )}
@@ -99,4 +87,4 @@ const DeleteAlertDialog:FC<DeleteAlertDialogProps>=({product,close})=>{
 
 )}
 
-export default DeleteAlertDialog
+export default DeleteAlertDialogAction

@@ -10,67 +10,61 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { Product } from "@/type/product"
 
 import { ArrowUpDown,MoreHorizontal } from "lucide-react"
 import Link from "next/link"
 import DeleteAlertDialog from "@/components/DeleteAlertDialog"
 import { AlertDialog, AlertDialogTrigger } from "@/components/ui/alert-dialog"
 import { useState } from "react"
+import { Billboard } from "./page"
+import Image from "next/image"
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
 
-export const columns: ColumnDef<Product>[] = [
+export const columns: ColumnDef<Billboard>[] = [
   {
-    accessorKey: "name",
-    header: "name",
+    accessorKey: "Image",
+    header: "Image",
+    cell:({row})=>(
+      <div
+        className="w-[300px] h-auto aspect-video overflow-hidden"
+      >
+        <Image
+          width={300}
+          height={169}
+          alt={"billboard"}
+          src={row.original.imageUrl}
+          className="w-full h-auto aspect-video object-cover"
+        />
+      </div>
+    )
   },
   {
-    accessorKey: "stock",
-    header: ({column})=>{
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Stock
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
-      )
-
-    },
-  },
-  {
-    accessorKey: "updatedAt",
-    header: ()=><div>Last Updated</div>,
+    accessorKey: "Date",
+    header: ()=><div>Date</div>,
     cell:({row})=>{
-      const product = row.original
+      const billboard = row.original
       return(
         <div>
-          {new Date(product.updatedAt).toDateString()}
+          {new Date(billboard.updatedAt).toDateString()}
         </div>
       )
     },
   },
   {
-    accessorKey: "price",
-    header: () => <div className="text-right">Price</div>,
+    accessorKey: "label",
+    header: () => <div className="text-right">Label</div>,
     cell: ({ row }) => {
-      const price = parseFloat(row.getValue("price"))
-      const formatted = new Intl.NumberFormat("en-GB", {
-        style: "currency",
-        currency: "MYR",
-      }).format(price)
- 
-      return <div className="text-right font-medium">{formatted}</div>
+      return <div className="text-right font-medium">{row.original.label}</div>
     },
   },
   {
     id: "actions",
     cell: ({ row }) => {
-      const product = row.original
+      const billboard = row.original
       const [open, setOpen] = useState(false)
-    
+      
+ 
       return (
         <AlertDialog
           open={open}
@@ -89,7 +83,7 @@ export const columns: ColumnDef<Product>[] = [
             <DropdownMenuSeparator />
             <DropdownMenuItem>
               <Link
-                href={`${process.env.NEXT_PUBLIC_APP_URL}/products/${product.id}`}
+                href={`${process.env.NEXT_PUBLIC_APP_URL}/billboards/${billboard.id}`}
                 >
                 {process.env.NEXT_PUBLIC_APP_URL}
               </Link>
@@ -97,19 +91,19 @@ export const columns: ColumnDef<Product>[] = [
 
             <AlertDialogTrigger asChild>
                <DropdownMenuItem>
-                  Delete product
+                  Delete billboard
               </DropdownMenuItem>
             </AlertDialogTrigger>
 
           
 
             <DropdownMenuItem
-              onClick={() => navigator.clipboard.writeText(product.id.toString())}
+              onClick={() => navigator.clipboard.writeText(billboard.id.toString())}
             >
               Copy Product Id
             </DropdownMenuItem>
           </DropdownMenuContent>
-          <DeleteAlertDialog product={product} close={()=>setOpen(false)}/>
+          {/* <DeleteAlertDialog data={billboard} close={()=>setOpen(false)}/> */}
         </DropdownMenu>
        
       </AlertDialog>

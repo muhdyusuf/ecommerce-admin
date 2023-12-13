@@ -5,6 +5,8 @@ import prisma from '../../../../../prisma/client'
 import { Card } from '@/components/ui/card'
 import { Product } from '@/type/product'
 import Image from 'next/image'
+import ImageUploadInput from '@/components/ImageUploadInput'
+import ProductForm from './ProductForm'
 
 // async function getProduct(id:number){
 //    "use server"
@@ -40,7 +42,7 @@ const page:FC<pageProps>=({params})=>{
 
    async function getProduct() {
       try {
-         const res=await fetch(`${process.env.NEXT_PUBLIC_APP_URL}/api/products/${productId}`,{cache:"no-store"})
+         const res=await fetch(`${process.env.NEXT_PUBLIC_APP_URL}/api/products/${productId}`)
          if(res.status===400)throw new Error("invalid id")
           const {data:{product}}=await res.json()
          setProduct(product)
@@ -55,6 +57,26 @@ const page:FC<pageProps>=({params})=>{
    },[])
 
    console.log(product)
+
+   const [imageUrls, setImageUrls] = useState<string[]>(["","","",""])
+
+
+   function handleImageChange(url:string,index:number){
+      console.log(url)
+      if(url===""){
+         setImageUrls(state=>{
+            state.splice(index,1)
+            state.push("")
+            return state
+         })
+      }
+      else{
+         setImageUrls(state=>{
+            state[index]=url
+            return state
+         })
+      }
+   }
    
 
   
@@ -65,17 +87,26 @@ const page:FC<pageProps>=({params})=>{
          <h1>
             {product?.name}
          </h1>
-         {product.imageUrls?.map(url=>(
-            <Image
-               width={400}
-               height={400}
-               alt="prodcutImage"
-               src={url}
-               className='w-[300px] aspect-square object-contain
-               '
-            />
+         <div>
+         {product.imageUrls?.map((url,index)=>(
+            <div
+               key={`${product.name}image${index}`}
+               className='w-[200px]'
+            >
+               <ImageUploadInput
+                  defaultUrl={url}
+                  onImageUploaded={(url)=>handleImageChange(url,index)}
+                  width={500}
+                  height={500}
+               />
+            </div>
          ))}
+         </div>
+         <ProductForm
+            product={product}
+         />
       </Card>)}
+
    </main>
 )}
 

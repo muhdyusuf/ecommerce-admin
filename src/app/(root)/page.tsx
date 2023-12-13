@@ -11,7 +11,54 @@ import {
 
 import Overview from "@/components/Overview"
 import RecentSales from "@/components/RecentSales"
+import DashboardDeltaCard from "@/components/DashboardDeltaCard"
+import prisma from "../../../prisma/client"
 
+async function getLastMonthSalesCount(){
+  const currentDate = new Date();
+  const currentStartOfMonth = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
+  const currentEndOfMonth = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0, 23, 59, 59);
+
+ 
+
+  try {
+    const currentMonthSalesCount=await prisma.order.count({
+      where:{
+        status:"success",
+        createdAt:{
+          gte:currentStartOfMonth,
+          lte:currentEndOfMonth,
+        }
+      },
+
+    })
+    console.log(currentMonthSalesCount)
+    return currentMonthSalesCount
+   
+  } catch (error) {
+    return new Error("Error getting Data")
+  }
+}
+async function getCurrentMonthSalesCount(){
+  const currentDate = new Date();
+  const lastEndOfMonth=new Date(currentDate.setDate(0))
+  const lastStartOfMonth=new Date(currentDate.setDate(1))
+  try {
+    const lastMonthSalesCount=await prisma.order.count({
+      where:{
+        status:"success",
+        createdAt:{
+          gte:lastStartOfMonth,
+          lte:lastEndOfMonth,
+        }
+      },
+
+    })
+    return lastMonthSalesCount
+  } catch (error) {
+    return new Error("Error getting Data")
+  }
+}
 
 export const metadata: Metadata = {
   title: "Dashboard",
@@ -24,31 +71,28 @@ export default function Home() {
       
             <main className="space-y-4">
               <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-                <Card>
-                  <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                    <CardTitle className="text-sm font-medium">
-                      Total Revenue
-                    </CardTitle>
+                <DashboardDeltaCard
+                  getXValue={getLastMonthSalesCount}
+                  getYValue={getCurrentMonthSalesCount}
+                  title="sales"
+                  icon={
                     <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="2"
-                      className="h-4 w-4 text-muted-foreground"
-                    >
-                      <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
-                    </svg>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="text-2xl font-bold">$45,231.89</div>
-                    <p className="text-xs text-muted-foreground">
-                      +20.1% from last month
-                    </p>
-                  </CardContent>
-                </Card>
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    className="h-4 w-4 text-muted-foreground"
+                  >
+                    <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
+                    <circle cx="9" cy="7" r="4" />
+                    <path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75" />
+                  </svg>
+                  }
+                />
+
                 <Card>
                   <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                     <CardTitle className="text-sm font-medium">

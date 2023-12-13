@@ -36,6 +36,27 @@ const Navbar:FC<NavbarProps>=({})=>{
             >
                 <li>
                     <Link
+                        href={"/category"}
+                    >
+                        category
+                    </Link>
+                </li>
+                <li>
+                    <Link
+                        href={"/colour"}
+                    >
+                        Colour
+                    </Link>
+                </li>
+                <li>
+                    <Link
+                        href={"/size"}
+                    >
+                        Size
+                    </Link>
+                </li>
+                <li>
+                    <Link
                         href={"/payment"}
                     >
                         order
@@ -46,6 +67,13 @@ const Navbar:FC<NavbarProps>=({})=>{
                         href={"/products"}
                     >
                         products
+                    </Link>
+                </li>
+                <li>
+                    <Link
+                        href={"/billboards"}
+                    >
+                        Billboard
                     </Link>
                 </li>
                 <li>

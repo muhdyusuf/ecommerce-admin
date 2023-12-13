@@ -5,7 +5,10 @@ export const productSchema=z.object({
     description:z.string().min(20).max(200),
     stock:z.preprocess(val=>Number(val),z.number().positive()),
     price:z.preprocess(val=>Number(val),z.number().positive()),
-    category:z.string().optional(),
-    imageUrls:z.array(z.string()).optional(),
+    category:z.string(),
+    imageUrls:z.array(z.string()),
+    size:z.string(),
+    colour:z.string()
     
 })
+

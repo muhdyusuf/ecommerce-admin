@@ -8,7 +8,7 @@ async function main() {
             price:313,
             description:"Lorem ipsum dolor sit, amet consectetur adipisicing elit. Ipsa, totam.",
             imageUrls:["dasdasda"],
-            category:"hello",
+            
             stock:1,
             rating:{
                 create:{
@@ -16,9 +16,52 @@ async function main() {
                     count:1
 
                 }
+            },
+            colour:{
+              crea
             }
         }
-    })
+    }
+  )
+  // const orders=await prisma.order.createMany({
+  //   data:[
+  //     {
+  //       total: 100,
+  //       status: "pending",
+  //       email: "m@example.com",
+  //     },
+  //     {
+  //       total: 100,
+  //       status: "pending",
+  //       email: "m@example.com",
+  //     },
+  //     {
+  //       total: 100,
+  //       status: "pending",
+  //       email: "m@example.com",
+  //     },
+  //     {
+  //       total: 100,
+  //       status: "pending",
+  //       email: "m@example.com",
+  //     },
+  //     {
+  //       total: 100,
+  //       status: "success",
+  //       email: "m@example.com",
+  //     },
+  //     {
+  //       total: 100,
+  //       status: "pending",
+  //       email: "m@example.com",
+  //     },
+  //     {
+  //       total: 100,
+  //       status: "pending",
+  //       email: "m@example.com",
+  //     },
+  //   ]
+  // })
 
    
 }

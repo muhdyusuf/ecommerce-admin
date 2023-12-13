@@ -3,23 +3,30 @@ import { Input } from './ui/input'
 import Image from 'next/image'
 import supabase from '@/lib/supabase'
 import { type } from 'os'
-import { Ghost, Loader2, X } from 'lucide-react'
+import { Ghost, Loader2, PlusCircle, X } from 'lucide-react'
 import { Card, CardContent } from './ui/card'
 import { Button } from './ui/button'
+import { cn } from '@/lib/utils'
 
 interface ImageUploadInputProps {
   onImageUploaded:(url:string)=>void,
-  defaultUrl?:string
+  defaultUrl?:string,
+  width:number,
+  height:number,
+  className?:string
 }
 
 const ImageUploadInput: FC<ImageUploadInputProps>=({
     onImageUploaded,
-    defaultUrl
+    defaultUrl,
+    width,
+    height,
+    className
 })=>{
    
     const [imageUrl, setImageUrl] = useState<string|undefined>(defaultUrl||undefined)
     const [loading, setLoading] = useState(false)
-    let uploadedImagePath=useRef<undefined|string>()
+ 
  
 
 
@@ -39,7 +46,7 @@ const ImageUploadInput: FC<ImageUploadInputProps>=({
                 })
                
                 if(error) throw error   
-                uploadedImagePath.current=data.path
+               
                 setImageUrl(`https://wawzxvxxzvalaeswnzuy.supabase.co/storage/v1/object/public/ecommerce-v2/${data?.path}`)
                 
                 onImageUploaded(`https://wawzxvxxzvalaeswnzuy.supabase.co/storage/v1/object/public/ecommerce-v2/${data?.path}`)
@@ -52,34 +59,56 @@ const ImageUploadInput: FC<ImageUploadInputProps>=({
         
     }
 
-    async function handleRemoveImage() {
-        console.log("remove")
-        console.log(imageUrl,uploadedImagePath)
-        if(!imageUrl||!uploadedImagePath.current)return
+    async function handleRemoveImage() {        
+        if(defaultUrl){
+            setImageUrl(undefined)
+            onImageUploaded("")
+        }
+        if(!imageUrl)return
 
         try {
             const { data, error } = await supabase
             .storage
             .from('ecommerce-v2')
-            .remove([uploadedImagePath.current])
+            .remove([imageUrl])
             setImageUrl(undefined)
-            uploadedImagePath.current=undefined
+
         } catch (error) {
             
         }
         finally{
             onImageUploaded("")
         }
+        
     }
 
  
  return (
    <Card
-    className='w-full aspect-square relative overflow-hidden'
-   >
-        <CardContent>
-            {imageUrl&&(
+    className={cn('w-full flex relative rounded-md overflow-hidden aspect-square',className)}
+   >    
+        {loading?(
+        <CardContent
+            className='w-full h-full p-0 flex items-center justify-center relative'
+        >
+            <Loader2
+                className='w-1/4 h-auto aspect-square animate-spin'
+            />
+        </CardContent>
+        ):(
+        <CardContent
+            className='w-full h-full p-0 flex items-center justify-center relative'
+        >
+            {imageUrl?(
                 <>
+                <Image
+                src={imageUrl}
+                width={width}
+                height={height}
+                alt='adsaddas'
+                className="object-cover w-full h-full" 
+                
+                />
                 <Button
                     type='button'
                     variant={"ghost"}
@@ -89,33 +118,25 @@ const ImageUploadInput: FC<ImageUploadInputProps>=({
                     <X  />
                 </Button>
 
-                <Image
-                src={imageUrl}
-                width={500}
-                height={500}
-                alt='adsaddas'
-                className='w-[300px] aspect-square object-cover'
-                
-                />
+
                 </>
-                )}
-            <div
-                className='absolute top-0 right-0 w-full h-full grid place-content-center'
-                >
-                {loading?(
-                    <Loader2
-                    className='animate-spin'
-                    />
-                    ):(
-                        <Input
-                        type='file'
-                        accept="image/png, image/jpeg"
-                        onChange={handleChange}
-                        disabled={loading}
-                        />
-                    )}
-            </div>
+            ):(
+                <PlusCircle
+                    strokeWidth={2}
+                    className='stroke-muted-foreground w-1/4 h-auto aspect-square p-0'
+                />
+            )}
+
+            <Input
+            type='file'
+            accept="image/png, image/jpeg"
+            onChange={handleChange}
+            disabled={loading}
+            className='opacity-0 absolute top-0 bottom-0 m-auto '
+            />  
+            
         </CardContent>
+        )}
    </Card>
 )}
 

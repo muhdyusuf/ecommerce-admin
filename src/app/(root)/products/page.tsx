@@ -72,6 +72,9 @@ type Payment = {
       select:{
         id:true,
         name:true,
+        category:true,
+        colour:true,
+        size:true, 
         price:true,
         description:true,
         stock:true,
@@ -95,6 +98,8 @@ type Payment = {
 
   }
 
+  
+
 interface pageProps {
   searchParams:{
     page?:number
@@ -107,6 +112,10 @@ const page:FC<pageProps>=async ({searchParams})=>{
   const {page}=searchParams
   const allProductLength=await prisma.product.count()
   const products= await getProducts(page)
+  const categories=await prisma.category.findMany()
+  const sizes=await prisma.size.findMany()
+  const colours=await prisma.colour.findMany()
+  
 
 
 
@@ -115,7 +124,11 @@ const page:FC<pageProps>=async ({searchParams})=>{
     <main
       className='md:container'
     >
-      <AddProductModal/>
+      <AddProductModal 
+        categories={categories}
+        colours={colours}
+        sizes={sizes}
+      />
       <div>
         <DataTable columns={columns} data={products} pageCount={Math.ceil(allProductLength/10)} />
       </div>

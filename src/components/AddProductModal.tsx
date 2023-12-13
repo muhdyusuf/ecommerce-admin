@@ -21,6 +21,15 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
+
+
 import { Button } from './ui/button'
 
 import { useForm } from "react-hook-form"
@@ -33,27 +42,34 @@ import { Textarea } from './ui/textarea'
 import { register } from 'module'
 import { Loader2 } from 'lucide-react'
 import ImageUploadInput from './ImageUploadInput'
+import { Category, Colour, Size } from '@prisma/client'
 interface addProductProps {
- 
+ categories:Category[],
+ sizes:Size[],
+ colours:Colour[]
+
 }
 
 type AddProductForm=z.infer<typeof productSchema>
 
-const AddProductModal:FC<addProductProps>=({})=>{
+const AddProductModal:FC<addProductProps>=({categories,colours,sizes})=>{
 
   const [loading, setLoading] = useState(false)
   const [imageUrls, setimageUrls] = useState<string[]>([""])
+  const [open,setOpen]=useState<boolean>(false)
 
     const form=useForm<AddProductForm>({
       resolver:zodResolver(productSchema),
       defaultValues:{
         name:"",
-        category:"all",
-        price:1,
-        stock:1,
-        description:"",
-   
+        category:"",
+        colour:"",
+        size:"",
+        price:0,
+        stock:0,
+        imageUrls:[""]
       }
+  
     })
 
 
@@ -72,7 +88,10 @@ const AddProductModal:FC<addProductProps>=({})=>{
       try {
         const product=await fetch(`${process.env.NEXT_PUBLIC_APP_URL}/api/products`,{
           method:"POST",
-          body:JSON.stringify({product:{...values,imageUrls:filteredImageUrls}})
+          body:JSON.stringify({product:{
+            ...values,
+            imageUrls:filteredImageUrls
+          }})
         })
         if(product.status===200){
           setLoading(false)
@@ -82,12 +101,12 @@ const AddProductModal:FC<addProductProps>=({})=>{
       }
       finally{
         setLoading(false)
+        form.reset()
+        setOpen(false)
       }
      
-      form.reset()
   } 
 
-  console.log(form.formState.errors)
 
   function handleImageChange(url:string,imageIndex:number){
     const _imageUrls=[...imageUrls]
@@ -111,11 +130,15 @@ const AddProductModal:FC<addProductProps>=({})=>{
     
     setimageUrls(_imageUrls)
   }
-  console.log(form.watch("imageUrls"))
+  console.log(form.formState.errors)
+  
 
 
  return(
-   <Dialog>
+   <Dialog
+    open={open}
+    onOpenChange={()=>setOpen(!open)}
+   >
    <DialogTrigger
     asChild
    >
@@ -144,6 +167,8 @@ const AddProductModal:FC<addProductProps>=({})=>{
               <ImageUploadInput
                 key={"imageUpload0"}
                 onImageUploaded={(url)=>handleImageChange(url,0)}
+                width={500}
+                height={500}
                 />
             </div>
 
@@ -153,6 +178,8 @@ const AddProductModal:FC<addProductProps>=({})=>{
               <ImageUploadInput
                 key={"imageUpload1"}
                 onImageUploaded={(url)=>handleImageChange(url,1)}
+                width={500}
+                height={500}
                 />
             </div>
             <div
@@ -161,6 +188,8 @@ const AddProductModal:FC<addProductProps>=({})=>{
               <ImageUploadInput
                 key={"imageUpload2"}
                 onImageUploaded={(url)=>handleImageChange(url,2)}
+                width={500}
+                height={500}
               />
             </div>
             <div
@@ -169,6 +198,8 @@ const AddProductModal:FC<addProductProps>=({})=>{
               <ImageUploadInput
                 key={"imageUpload3"}
                 onImageUploaded={(url)=>handleImageChange(url,3)}
+                width={500}
+                height={500}
                 />
             </div>
         </div>
@@ -195,15 +226,100 @@ const AddProductModal:FC<addProductProps>=({})=>{
               </FormItem>
             )}
           />
+       
+         
           <FormField
             control={form.control}
             name="category"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Name</FormLabel>
-                <FormControl>
-                  <Input placeholder="Name" {...field} />
-                </FormControl>
+                <FormLabel>Category</FormLabel>
+                <Select
+                   onValueChange={field.onChange}
+                >
+                <SelectTrigger 
+                  className="w-full">
+                  <SelectValue 
+                    placeholder="Select colour"
+                  />
+                </SelectTrigger>
+                <SelectContent>
+                  {categories.map(category=>(
+                    <SelectItem
+                      key={category.id+category.name}
+                      value={category.id.toString()}
+                    >
+                      {category.name}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+                </Select>
+         
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="size"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Colour</FormLabel>
+             
+                <Select
+                   onValueChange={field.onChange}
+                 >
+                <SelectTrigger 
+                  className="w-full">
+                  <SelectValue 
+                    placeholder="Select colour"
+                  />
+                </SelectTrigger>
+                <SelectContent>
+                  {sizes.map(size=>(
+                    <SelectItem
+                      key={size.name}
+                      value={size.id.toString()}
+                    >
+                      {size.name}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+                </Select>
+              
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="colour"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Colour</FormLabel>
+             
+                <Select
+                   onValueChange={field.onChange}
+               
+                >
+                <SelectTrigger 
+                  className="w-full">
+                  <SelectValue 
+                    placeholder="Select colour"
+                  />
+                </SelectTrigger>
+                <SelectContent>
+                  {colours.map(colour=>(
+                    <SelectItem
+                      key={colour.id+colour.name}
+                      value={colour.id.toString()}
+                    >
+                      {colour.name}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+                </Select>
+            
                 <FormMessage />
               </FormItem>
             )}
@@ -219,7 +335,6 @@ const AddProductModal:FC<addProductProps>=({})=>{
                   
                 >
                   <Input 
-                    type='number'
                     placeholder="Price" 
                     {...field}
                     />
@@ -237,7 +352,6 @@ const AddProductModal:FC<addProductProps>=({})=>{
                 <FormLabel>Stock</FormLabel>
                 <FormControl>
                   <Input 
-                    type='number'
                     placeholder="Price" 
                     {...field}
                     />
