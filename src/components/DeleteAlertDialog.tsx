@@ -16,7 +16,11 @@ import { Loader2 } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 
 interface DeleteAlertDialogProps {
- product:Product
+ product:{
+    id:number,
+    name:string
+    imageUrls:string[]
+ }
  close:()=>void
 
 }
@@ -29,7 +33,7 @@ const DeleteAlertDialog:FC<DeleteAlertDialogProps>=({product,close})=>{
         setLoading(true)
         try {
             const res=await fetch(`${process.env.NEXT_PUBLIC_APP_URL}/api/products`,{
-                method:"PATCH",
+                method:"DELETE",
                 body:JSON.stringify({product:{
                     ...product
                 }})
@@ -39,7 +43,6 @@ const DeleteAlertDialog:FC<DeleteAlertDialogProps>=({product,close})=>{
            
             if(res.status===200){
                 const {data:{id}}=await res.json()
-
                 console.log(id)
                 setDeleted(true)
                 setTimeout(close,2000)
@@ -53,7 +56,6 @@ const DeleteAlertDialog:FC<DeleteAlertDialogProps>=({product,close})=>{
             router.refresh()
         }
         
-
     }
  return(
     <AlertDialogContent>

@@ -15,7 +15,7 @@ import { ArrowUpDown,MoreHorizontal } from "lucide-react"
 import Link from "next/link"
 import { AlertDialog, AlertDialogTrigger } from "@/components/ui/alert-dialog"
 import { useState } from "react"
-import { Colour } from "@/type/colour"
+import { Colour } from "@/type/category"
 import DeleteAlertDialogAction from "@/components/DeleteAlertDialogAction"
 import { deleteCategory } from "./page"
 // This type is used to define the shape of our data.
@@ -27,10 +27,10 @@ export const columns: ColumnDef<Colour>[] = [
     accessorKey: "name",
     header: ()=><div>Name</div>,
     cell:({row})=>{
-      const colour = row.original
+      const category = row.original
       return(
         <div>
-          {colour.name}
+          {category.name}
         </div>
       )
     },
@@ -40,10 +40,10 @@ export const columns: ColumnDef<Colour>[] = [
     accessorKey: "createdAt",
     header: ()=><div>Created At</div>,
     cell:({row})=>{
-      const colour = row.original
+      const category = row.original
       return(
         <div>
-          {new Date(colour.createdAt).toDateString()}
+          {new Date(category.createdAt).toDateString()}
         </div>
       )
     },
@@ -52,7 +52,7 @@ export const columns: ColumnDef<Colour>[] = [
   {
     id: "actions",
     cell: ({ row }) => {
-      const colour = row.original
+      const category = row.original
       const [open, setOpen] = useState(false)
     
       return (
@@ -73,7 +73,7 @@ export const columns: ColumnDef<Colour>[] = [
             <DropdownMenuSeparator />
             <DropdownMenuItem>
               <Link
-                href={`${process.env.NEXT_PUBLIC_APP_URL}/products/${colour.id}`}
+                href={`${process.env.NEXT_PUBLIC_APP_URL}/products/${category.id}`}
                 >
                 {process.env.NEXT_PUBLIC_APP_URL}
               </Link>
@@ -81,22 +81,22 @@ export const columns: ColumnDef<Colour>[] = [
 
             <AlertDialogTrigger asChild>
                <DropdownMenuItem>
-                  Delete colour
+                  Delete category
               </DropdownMenuItem>
             </AlertDialogTrigger>
 
           
 
             <DropdownMenuItem
-              onClick={() => navigator.clipboard.writeText(colour.id.toString())}
+              onClick={() => navigator.clipboard.writeText(category.id.toString())}
             >
               Copy Product Id
             </DropdownMenuItem>
           </DropdownMenuContent>
           <DeleteAlertDialogAction 
-            data={{id:colour.id,name:colour.name}} 
+            data={{id:category.id,name:category.name}} 
             close={()=>setOpen(false)}
-            action={deleteCategory}
+            action={()=>deleteCategory(category.id)}
 
           />
         </DropdownMenu>

@@ -115,7 +115,8 @@ const AddColourModal:FC<addColourProps>=({
    </DialogTrigger>
    <DialogContent>
      <DialogHeader>
-       <DialogTitle>Are you sure absolutely sure?</DialogTitle>
+       <DialogTitle>Add Colour</DialogTitle>
+       <DialogDescription>create new colour</DialogDescription>
        <DialogClose/>
     
      </DialogHeader>
@@ -132,9 +133,9 @@ const AddColourModal:FC<addColourProps>=({
             name="name"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Label</FormLabel>
+                <FormLabel>Name</FormLabel>
                 <FormControl>
-                  <Input placeholder="Type your message here." {...field}/>
+                  <Input placeholder="Colour Name" {...field}/>
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -144,13 +145,16 @@ const AddColourModal:FC<addColourProps>=({
             control={form.control}
             name="value"
             render={({ field }) => (
-              <FormItem>
-                <FormLabel>Label</FormLabel>
+              <FormItem
+                className='p-0'
+              >
+                <FormLabel>Select colour</FormLabel>
                 <FormControl>
                   <Input 
                     type='color'
                     placeholder="Type your message here." 
                     {...field}
+                    className='w-32 h-auto aspect-square'
                    />
                 </FormControl>
                 <FormMessage />
@@ -177,6 +181,7 @@ const AddColourModal:FC<addColourProps>=({
             <Button
             type='submit'
             disabled={loading}
+            className='min-w-[100px]'
             
             >
             {loading?(
@@ -184,8 +189,8 @@ const AddColourModal:FC<addColourProps>=({
                 className='stroke-muted-foreground animate-spin'
                 />
                 ):(
-                    "add product"
-                    )}
+                    "add colour"
+                )}
             </Button>
         </DialogFooter>
         

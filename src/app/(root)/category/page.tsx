@@ -4,14 +4,14 @@ import { DataTable } from './data-table'
 import { columns } from './column'
 
 import prisma from '../../../../prisma/client'
-import { Colour } from '@/type/colour'
 import AddCategoryModal, { AddCategoryForm } from '@/components/AddCategoryModal'
+import { Category } from '@prisma/client'
 
 
 
 
 
-  async function getCategory(): Promise<Colour[]> {
+  async function getCategory(): Promise<Category[]> {
     const products=await prisma.category.findMany({
       orderBy:{
         updatedAt:"desc"
@@ -31,15 +31,19 @@ interface pageProps {
 }
 
 export async function deleteCategory(id:number){
+  "use serrver"
+  console.log(id)
   try{
-    const res=await prisma.colour.delete({
+    const res=await prisma.category.delete({
       where:{
         id:id
       }
     })
     return res
   }catch(error){
-    return error
+    return {error:{
+      message:error
+    }}
   }
 
 }
@@ -47,7 +51,7 @@ export async function deleteCategory(id:number){
 export async function addCategory(data:AddCategoryForm) {
   "use server"
   try {
-    const category=prisma.category.create({
+    const category=await prisma.category.create({
       data:{
         ...data
       }
@@ -55,7 +59,7 @@ export async function addCategory(data:AddCategoryForm) {
     })
     return category
   } catch (error) {
-    return new Error("error")
+    return {error:{message:error}}
   }
 }
   
@@ -63,7 +67,7 @@ export async function addCategory(data:AddCategoryForm) {
 const page:FC<pageProps>=async ({searchParams})=>{
   
   const {page}=searchParams
-  const colours= await getCategory()
+  const category= await getCategory()
 
 
 
@@ -74,7 +78,7 @@ const page:FC<pageProps>=async ({searchParams})=>{
     >
       <AddCategoryModal addCategory={addCategory}/>
       <div>
-        <DataTable columns={columns} data={colours} />
+        <DataTable columns={columns} data={category} />
       </div>
     </main>
 )}

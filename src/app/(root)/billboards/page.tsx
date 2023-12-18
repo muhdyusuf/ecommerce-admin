@@ -33,7 +33,7 @@ async function addBillboard(form:BillboardForm) {
   "use server"
 
   const temporaryPath=getPathFromUrl(form.imageUrl)
-  const finalUrl="billboardImages/"+temporaryPath.split("/")[1]
+  const finalUrl="billboard_images/"+temporaryPath.split("/")[1]
   console.log(finalUrl)
 
   console.log(temporaryPath)
@@ -44,7 +44,6 @@ async function addBillboard(form:BillboardForm) {
       .move(temporaryPath,finalUrl)
 
     console.log(data)
-    if(error)throw new Error(error.message)
 
     const billboard=await prisma.billboard.create({
       data:{
@@ -56,6 +55,7 @@ async function addBillboard(form:BillboardForm) {
       return billboard
     }
   } catch (error) {
+    console.log(error)
     return error
   }
   

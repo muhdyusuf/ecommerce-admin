@@ -5,10 +5,11 @@ export const productSchema=z.object({
     description:z.string().min(20).max(200),
     stock:z.preprocess(val=>Number(val),z.number().positive()),
     price:z.preprocess(val=>Number(val),z.number().positive()),
-    category:z.string(),
-    imageUrls:z.array(z.string()),
-    size:z.string(),
-    colour:z.string()
+    category:z.preprocess(val=>Number(val),z.number().positive()),
+    imageUrls:z
+        .array(z.string()).refine(arr=>arr.length>0,"Require 1 Image"),
+    size:z.preprocess(val=>Number(val),z.number().positive()),
+    colour:z.preprocess(val=>Number(val),z.number().positive()),
     
 })
 

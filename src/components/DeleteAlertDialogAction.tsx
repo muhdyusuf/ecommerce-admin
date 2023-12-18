@@ -13,6 +13,7 @@ import {
 import { Button } from './ui/button'
 import { Product } from '@/type/product'
 import { Loader2 } from 'lucide-react'
+import { useRouter } from 'next/navigation'
 
 interface DeleteAlertDialogActionsProps {
  data:{
@@ -26,6 +27,7 @@ interface DeleteAlertDialogActionsProps {
 const DeleteAlertDialogAction:FC<DeleteAlertDialogActionsProps>=({data,close,action})=>{
     const [loading, setLoading] = useState<boolean>(false)
     const [deleted, setDeleted] = useState<boolean>(false)
+    const router=useRouter()
     async function handleDelete(){
         setLoading(true)
         try {
@@ -39,6 +41,8 @@ const DeleteAlertDialogAction:FC<DeleteAlertDialogActionsProps>=({data,close,act
         }
         finally{
             setLoading(false)
+            setTimeout(()=>close(),1000)
+            router.refresh()
         }
         
 

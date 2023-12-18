@@ -11,17 +11,14 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { MoreHorizontal } from "lucide-react"
+import { Order } from "@prisma/client"
+import { formatPrice } from "@/lib/utils"
 
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
-export type Payment = {
-  id: string
-  amount: number
-  status: "pending" | "processing" | "success" | "failed"
-  email: string
-}
 
-export const columns: ColumnDef<Payment>[] = [
+
+export const columns: ColumnDef<Order>[] = [
   {
     accessorKey: "status",
     header: "Status",
@@ -31,22 +28,21 @@ export const columns: ColumnDef<Payment>[] = [
     header: "Email",
   },
   {
+    accessorKey: "address",
+    header: "Address",
+  },
+  {
     accessorKey: "amount",
     header: () => <div className="text-right">Amount</div>,
     cell: ({ row }) => {
-      const amount = parseFloat(row.getValue("amount"))
-      const formatted = new Intl.NumberFormat("en-GB", {
-        style: "currency",
-        currency: "MYR",
-      }).format(amount)
- 
-      return <div className="text-right font-medium">{formatted}</div>
+      const order = row.original
+      return <div className="text-right font-medium">{formatPrice(order.total)}</div>
     },
   },
   {
     id: "actions",
     cell: ({ row }) => {
-      const payment = row.original
+      const order = row.original
  
       return (
         <DropdownMenu>
@@ -59,13 +55,13 @@ export const columns: ColumnDef<Payment>[] = [
           <DropdownMenuContent align="center">
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
             <DropdownMenuItem
-              onClick={() => navigator.clipboard.writeText(payment.id)}
+              onClick={() => navigator.clipboard.writeText(order.id.toString())}
             >
-              Copy payment ID
+              Copy order ID
             </DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem>View customer</DropdownMenuItem>
-            <DropdownMenuItem>View payment details</DropdownMenuItem>
+            <DropdownMenuItem>View order details</DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       )

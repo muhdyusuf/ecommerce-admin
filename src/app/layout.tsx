@@ -4,6 +4,7 @@ import './global.css'
 import { createServerComponentClient } from '@supabase/auth-helpers-nextjs'
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
+import { Toaster } from '@/components/ui/toaster'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -21,14 +22,13 @@ export default async function RootLayout({
     const {data:{session}}=await supabase.auth.getSession()
 
 
-    console.log(session)
-    // if(!session){
-    //     redirect("/signIn")
-    // }
     
   return (
     <html lang="en">
-      <body className='dark'>{children}</body>
+      <body className='dark'>
+        {children}
+        <Toaster/>
+      </body>
     </html>
   )
 }

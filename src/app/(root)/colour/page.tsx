@@ -50,7 +50,7 @@ export async function deleteColour(id:number){
 export async function addColour(data:AddColourForm) {
   "use server"
   try {
-    const colour=prisma.colour.create({
+    const colour=await prisma.colour.create({
       data:{
         ...data
       }

@@ -6,7 +6,7 @@ import { type } from 'os'
 import { Ghost, Loader2, PlusCircle, X } from 'lucide-react'
 import { Card, CardContent } from './ui/card'
 import { Button } from './ui/button'
-import { cn } from '@/lib/utils'
+import { cn, getPathFromUrl } from '@/lib/utils'
 
 interface ImageUploadInputProps {
   onImageUploaded:(url:string)=>void,
@@ -34,9 +34,17 @@ const ImageUploadInput: FC<ImageUploadInputProps>=({
         const selectedFiles = event.target.files as FileList;
             const file=selectedFiles[0]
             if(!file)return
-            console.log(file)
+            
             try {
                 setLoading(true)
+                if(imageUrl&&defaultUrl!==imageUrl){
+                    const path=getPathFromUrl(imageUrl)
+                    await supabase
+                    .storage
+                    .from('ecommerce-v2')
+                    .remove([path])
+                    setImageUrl(undefined)
+                }
                 const { data, error } = await supabase
                 .storage
                 .from('ecommerce-v2')
@@ -60,17 +68,18 @@ const ImageUploadInput: FC<ImageUploadInputProps>=({
     }
 
     async function handleRemoveImage() {        
-        if(defaultUrl){
+        if(defaultUrl&&defaultUrl===imageUrl){
             setImageUrl(undefined)
             onImageUploaded("")
         }
         if(!imageUrl)return
-
         try {
+            setLoading(true)
+            const path=getPathFromUrl(imageUrl)
             const { data, error } = await supabase
             .storage
             .from('ecommerce-v2')
-            .remove([imageUrl])
+            .remove([path])
             setImageUrl(undefined)
 
         } catch (error) {
@@ -78,9 +87,12 @@ const ImageUploadInput: FC<ImageUploadInputProps>=({
         }
         finally{
             onImageUploaded("")
+            setLoading(false)
         }
         
     }
+
+    
 
  
  return (

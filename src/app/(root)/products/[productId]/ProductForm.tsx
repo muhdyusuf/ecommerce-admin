@@ -1,174 +1,185 @@
-import ImageUploadInput from '@/components/ImageUploadInput'
+'use client'
+import {FC, useState} from 'react'
+
+//ui
 import { Button } from '@/components/ui/button'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
-import { cn } from '@/lib/utils'
+import {
+   Select,
+   SelectContent,
+   SelectItem,
+   SelectTrigger,
+   SelectValue,
+ } from "@/components/ui/select"
+ 
+
+
 import { productSchema } from '@/lib/validation/product'
-import { Product } from '@/type/product'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { Label } from '@radix-ui/react-label'
-import {FC} from 'react'
+
+import { Category, Colour, Product, Size} from '@prisma/client'
+
 import { useForm } from 'react-hook-form'
+import { Loader2 } from 'lucide-react'
+import MultipleImageInput from '@/components/MultipleImageInput'
+
+import { z } from 'zod'
+import { useToast } from '@/components/ui/use-toast'
+import { useRouter } from 'next/navigation'
+
+type ProductForm=z.infer<typeof productSchema>
 
 interface ProductFormProps{
-   product:Product
+   product?:ProductForm,
+   categories:Category[],
+   sizes:Size[],
+   colours:Colour[],
+   id?:number
+
  
 }
 
-const ProductForm:FC<ProductFormProps>=({product})=>{
-   const form = useForm<Product>({
+
+const ProductForm:FC<ProductFormProps>=({product,categories,sizes,colours,id})=>{
+   
+    const action=product?"Update Product":"Add Product"
+    const [loading, setLoading] = useState<boolean>(false)
+    const {toast}=useToast()
+    const router=useRouter()
+   
+    const form = useForm<ProductForm>({
       resolver:zodResolver(productSchema),
-      defaultValues:{...product}
-   })
-   async function onSubmit(data:Product) {
-      console.log(data)
+      defaultValues:product||{
+        name:"",
+        stock:0,
+        price:0,
+        category:1,
+        size:1,
+        colour:1,
+        description:"",
+        imageUrls:[]
+      }
+    })
+    async function updateProduct(data:ProductForm) {
+      if(!form.formState.isDirty){
+        toast({
+          description:"No changes on product"
+        })
+        return
+      }
+
+      setLoading(true)
+        try {
+          const res=await fetch(`${process.env.NEXT_PUBLIC_APP_URL}/api/products/${id}`,{
+            method:"PATCH",
+            body:JSON.stringify({
+              product:{
+                ...data,
+                imageUrls:data.imageUrls.filter(url=>url!=="")
+              }
+            })
+          })
+          const {data:{product}}=await res.json()
+          if(data){
+            toast({
+              title:"Product have been updated",
+              duration:1000
+            })
+            form.reset()
+          }
+        } catch (error) {
+          toast({
+            variant: "destructive",
+            title: "Uh oh! Something went wrong.",
+            description: "There was a problem with your request.",
+          })
+        } finally{
+          setLoading(false)
+  
+        }
+      
+      
+   }
+   async function addProduct(data:ProductForm) {
+    console.log(data)
+    const filteredImageUrls=form.getValues("imageUrls").filter(url=>url!=="")
+    
+    console.log(filteredImageUrls)
+
+    setLoading(true)
+    
+
+      try {
+        const res=await fetch(`${process.env.NEXT_PUBLIC_APP_URL}/api/products`,{
+          method:"POST",
+          body:JSON.stringify({product:{
+            ...data,
+            imageUrls:filteredImageUrls
+          }})
+        })
+        if(res.status===200){
+          setLoading(false)
+        }
+        const {product}=await res.json()
+        toast({
+          title:`New Product Added`,
+          description:`${product.name} have been added to the list`
+        })
+        form.reset()
+        router.refresh()
+
+      } catch (error) {
+        
+      }
+      finally{
+        setLoading(false)
+       
+      }
+    
+    
    }
    console.log(form.watch("imageUrls"))
+
+   
  return(
    <Form
       {...form}
    >
       <form
-         className='flex flex-col p-0 m-0'
-         onSubmit={form.handleSubmit(onSubmit)}
-      >
-         <FormField
-            control={form.control}
-            name='name'
-            render={({field})=>(
-               <FormItem
-                  className='flex justify-start items-center p-0 bg-red-600'
-               >
-                  <FormLabel
-                     className={cn("m-0 p-0")}
-                  >
-                     asdasdas
-                  </FormLabel>
-                  <div
-                     className={cn("m-0 p-0")}
-                  >
-                  <FormControl
-                     className={cn("m-0 p-0")}
-                  >
-                     <Input
-                        placeholder='stock'
-                        {...field}
-                        className={cn("mt-0 min-h-[100px]")}
-                        />
-                  </FormControl>
-                  <FormMessage
-                     className={cn("m-0")}
-                  />
-                  </div>
-                
-                  
-               </FormItem>
-            )}
-         />
-         <FormField
-            control={form.control}
-            name='name'
-            render={({field})=>(
-               <FormItem
-                  className='flex justify-start items-center p-0 bg-red-600'
-               >
-                  <FormLabel
-                     className={cn("m-0 p-0")}
-                  >
-                     asdasdas
-                  </FormLabel>
-                  <div
-                     className={cn("m-0 p-0")}
-                  >
-                  <FormControl
-                     className={cn("m-0 p-0")}
-                  >
-                     <Input
-                        placeholder='stock'
-                        {...field}
-                        className={cn("mt-0 min-h-[100px]")}
-                        />
-                  </FormControl>
-                  <FormMessage
-                     className={cn("m-0")}
-                  />
-                  </div>
-                
-                  
-               </FormItem>
-            )}
-         />
-         <div
-            className='w-[200px]'
+         className='max-w-full grid grid-cols-2 md:grid-cols-3 gap-y-12 gap-x-4'
+         onSubmit={form.handleSubmit(product?updateProduct:addProduct)}
+         //todoo add reset button
+         
          >
+
+         
+         
          <FormField
             control={form.control}
             name='imageUrls'
             render={({field})=>(
-               <FormItem>
+               <FormItem
+                className='col-span-full'
+               >
                   <FormLabel
                      className='mb-0'
                      >
-                     Description
+                     Image
                   </FormLabel>
-                  <ImageUploadInput
-                     defaultUrl={product.imageUrls[1]}
-                     onImageUploaded={(url:string)=>{
-                        const imageUrls=[...product.imageUrls]
-                        const currentUrl=product.imageUrls[1]
-                        if(url===""){
-                           field.onChange(imageUrls.filter(imageUrl=>currentUrl!==imageUrl))
-                        }
-                        else{
-                           field.onChange(imageUrls.map(imageUrl=>{
-                              if(imageUrl===currentUrl)return url
-                           }))
-                        }
-                     }}
-                     width={300}
-                     height={300}
-                     />
+                  <MultipleImageInput
+                     initialUrls={field.value}
+                     urls={field.value}
+                     onChange={(url)=>field.onChange([...url])}
+                     onBlur={field.onBlur}
+                     className='w-full flex gap-4'
+                  />
                   <FormMessage/>
                </FormItem>
             )}
          />
-         </div>
-         <div
-            className='w-[200px]'
-         >
-         <FormField
-            control={form.control}
-            name='imageUrls'
-            render={({field})=>(
-               <FormItem>
-                  <FormLabel
-                     className='mb-0'
-                     >
-                     Description
-                  </FormLabel>
-                  <ImageUploadInput
-                     defaultUrl={product.imageUrls[0]}
-                     onImageUploaded={(url:string)=>{
-                        const imageUrls=[...product.imageUrls]
-                        const currentUrl=product.imageUrls[0]
-                        if(url===""){
-                           field.onChange(imageUrls.filter(imageUrl=>currentUrl!==imageUrl))
-                        }
-                        else{
-                           field.onChange(imageUrls.map(imageUrl=>{
-                              if(imageUrl===currentUrl)return url
-                           }))
-                        }
-                     }}
-                     width={300}
-                     height={300}
-                     />
-                  <FormMessage/>
-               </FormItem>
-            )}
-         />
-         </div>
+        
          <FormField
             control={form.control}
             name='stock'
@@ -187,38 +198,185 @@ const ProductForm:FC<ProductFormProps>=({product})=>{
                </FormItem>
             )}
          />
-         <FormField
+        
+          <FormField
             control={form.control}
-            name='price'
-            render={({field})=>(
-               <FormItem>
-                  <FormLabel>
-                     Price
-                  </FormLabel>
-                  <Input
-                     {...field}
-                  />
-                  <FormMessage/>
-               </FormItem>
+            name="name"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Name</FormLabel>
+                <FormControl>
+                  <Input placeholder="Name" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
             )}
-         />
+          />
        
-         <div
-            className='flex gap-3 justify-end'
-         >
-            <Button
-               type='reset'
-               variant={"secondary"}
-               >
-               Reset
-            </Button>
+         
+          <FormField
+            control={form.control}
+            name="category"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Category</FormLabel>
+                <Select
+                   onValueChange={field.onChange}
+                   defaultValue={field.value.toString()}
+                >
+                <SelectTrigger 
+                  className="w-full">
+                  <SelectValue 
+                    placeholder="Select Category"
+                  />
+                </SelectTrigger>
+                <SelectContent>
+                  {categories.map(category=>(
+                    <SelectItem
+                      key={category.id+category.name}
+                      value={category.id.toString()}
+                    >
+                      {category.name}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+                </Select>
+         
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="size"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Size</FormLabel>
+             
+                <Select
+                   onValueChange={field.onChange}
+                   defaultValue={field.value.toString()}
+                 >
+                <SelectTrigger 
+                  className="w-full">
+                  <SelectValue 
+                    placeholder="Select Size"
+                  />
+                </SelectTrigger>
+                <SelectContent>
+                  {sizes.map(size=>(
+                    <SelectItem
+                      key={size.name}
+                      value={size.id.toString()}
+                    >
+                      {size.name}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+                </Select>
+              
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="colour"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Colour</FormLabel>
+             
+                <Select
+                   onValueChange={field.onChange}
+                   defaultValue={field.value.toString()}
+                >
+                <SelectTrigger 
+                  className="w-full">
+                  <SelectValue 
+                    placeholder="Select colour"
+                  />
+                </SelectTrigger>
+                <SelectContent>
+                  {colours.map(colour=>(
+                    <SelectItem
+                      key={colour.id+colour.name}
+                      value={colour.id.toString()}
+                    >
+                      {colour.name}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+                </Select>
+            
+                <FormMessage />
+              </FormItem>
+            )}
+          />
 
-            <Button
-               type='submit'
-               >
-               Submit
-            </Button>
-         </div>
+          <FormField
+            control={form.control}
+            name="price"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Price</FormLabel>
+                <FormControl
+                  
+                >
+                  <Input 
+                    placeholder="Price" 
+                    {...field}
+                    />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+            />
+
+      
+          <FormField
+            control={form.control}
+            name="description"
+            render={({ field }) => (
+              <FormItem
+               className='col-span-2'
+              >
+                <FormLabel>Description</FormLabel>
+                <FormControl>
+                  <Textarea placeholder="Type your message here." {...field}/>
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        
+
+     
+
+      <div
+         className='col-span-full flex justify-end gap-4'
+      >
+       {/* <Button
+         variant={"secondary"}
+         type='button'
+         disabled={(!form.formState.isDirty||loading)?true:false}
+         
+       >
+         Reset
+       </Button> */}
+        <Button
+          type='submit'
+          disabled={(!form.formState.isDirty||loading)?true:false}
+          className='min-w-[150px]'
+        >
+          {loading&&(
+            <Loader2 
+              className='stroke-muted-foreground animate-spin'
+            />
+          )}
+          {action}
+        </Button>
+      </div>    
+
 
             
       </form>

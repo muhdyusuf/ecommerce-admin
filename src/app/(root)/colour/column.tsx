@@ -49,6 +49,22 @@ export const columns: ColumnDef<Colour>[] = [
     },
   },
   {
+    id:"viewer",
+    cell:({row})=>{
+      const colour=row.original
+      return(
+        <div
+          style={{
+            backgroundColor:colour.value
+          }}
+          className="h-min aspect-square"
+        >
+
+        </div>
+      )
+    }
+  },
+  {
     accessorKey: "updatedAt",
     header: ()=><div>Last Updated</div>,
     cell:({row})=>{
@@ -60,7 +76,6 @@ export const columns: ColumnDef<Colour>[] = [
       )
     },
   },
- 
   {
     id: "actions",
     cell: ({ row }) => {
@@ -83,14 +98,7 @@ export const columns: ColumnDef<Colour>[] = [
           <DropdownMenuContent align="center">
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>
-              <Link
-                href={`${process.env.NEXT_PUBLIC_APP_URL}/products/${colour.id}`}
-                >
-                {process.env.NEXT_PUBLIC_APP_URL}
-              </Link>
-            </DropdownMenuItem>
-
+      
             <AlertDialogTrigger asChild>
                <DropdownMenuItem>
                   Delete colour
@@ -100,9 +108,14 @@ export const columns: ColumnDef<Colour>[] = [
           
 
             <DropdownMenuItem
+              onClick={() => navigator.clipboard.writeText(colour.value.toString())}
+            >
+              Copy colour code
+            </DropdownMenuItem>
+            <DropdownMenuItem
               onClick={() => navigator.clipboard.writeText(colour.id.toString())}
             >
-              Copy Product Id
+              Copy colour Id
             </DropdownMenuItem>
           </DropdownMenuContent>
           <DeleteAlertDialogAction 

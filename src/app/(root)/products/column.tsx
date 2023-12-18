@@ -17,14 +17,59 @@ import Link from "next/link"
 import DeleteAlertDialog from "@/components/DeleteAlertDialog"
 import { AlertDialog, AlertDialogTrigger } from "@/components/ui/alert-dialog"
 import { useState } from "react"
+import { useToast } from "@/components/ui/use-toast"
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
 
-export const columns: ColumnDef<Product>[] = [
+export type ProductColumn={
+  id:number,
+  colour:{
+    name:string,
+    value:string,
+  },
+  category:string,
+  size:string,
+  updatedAt:Date,
+  price:number,
+  stock:number,
+  name:string
+  imageUrls:string[]
+  
+}
+
+export const columns: ColumnDef<ProductColumn>[] = [
   {
     accessorKey: "name",
     header: "name",
   },
+  {
+    accessorKey: "colour",
+    header: "colour",
+    cell:({row})=>(
+      <div>
+        {row.original.colour.value}
+      </div>
+    )
+  },
+  {
+    accessorKey: "size",
+    header: "size",
+    cell:({row})=>(
+      <div>
+        {row.original.size}
+      </div>
+    )
+  },
+  {
+    accessorKey: "category",
+    header: "category",
+    cell:({row})=>(
+      <div>
+        {row.original.category}
+      </div>
+    )
+  },
+ 
   {
     accessorKey: "stock",
     header: ({column})=>{
@@ -70,6 +115,7 @@ export const columns: ColumnDef<Product>[] = [
     cell: ({ row }) => {
       const product = row.original
       const [open, setOpen] = useState(false)
+      const {toast}=useToast()
     
       return (
         <AlertDialog
@@ -91,7 +137,7 @@ export const columns: ColumnDef<Product>[] = [
               <Link
                 href={`${process.env.NEXT_PUBLIC_APP_URL}/products/${product.id}`}
                 >
-                {process.env.NEXT_PUBLIC_APP_URL}
+                Edit product
               </Link>
             </DropdownMenuItem>
 
@@ -104,12 +150,24 @@ export const columns: ColumnDef<Product>[] = [
           
 
             <DropdownMenuItem
-              onClick={() => navigator.clipboard.writeText(product.id.toString())}
+              onClick={()=>{ 
+                toast({
+                  title: `${product.id} copied to clipboard`,
+                })
+                navigator.clipboard.writeText(product.id.toString())
+              }}
             >
               Copy Product Id
             </DropdownMenuItem>
           </DropdownMenuContent>
-          <DeleteAlertDialog product={product} close={()=>setOpen(false)}/>
+          <DeleteAlertDialog 
+            product={{
+              id:product.id,
+              name:product.name,
+              imageUrls:product.imageUrls
+            }} 
+            close={()=>setOpen(false)}
+            />
         </DropdownMenu>
        
       </AlertDialog>

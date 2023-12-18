@@ -20,10 +20,10 @@ const Navbar:FC<NavbarProps>=({})=>{
  return(
     <>
     <header
-        className='fixed top-0 right-0 w-full h-12'
+        className='sticky top-0 right-0 w-full h-12'
         >
        <nav
-        className='md:container flex justify-between items-center w-full h-full'
+        className='md:container flex justify-between items- w-full h-full'
        >
             <Link
                 href={"/"}
@@ -86,9 +86,7 @@ const Navbar:FC<NavbarProps>=({})=>{
             </ul>
        </nav>
     </header>
-    <div
-        className='h-12 w-full'
-    />
+    
     </>
 )}
 

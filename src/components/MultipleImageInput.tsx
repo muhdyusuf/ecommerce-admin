@@ -1,0 +1,66 @@
+import {FC, useEffect, useState} from 'react'
+import ImageUploadInput from './ImageUploadInput'
+import { cn } from '@/lib/utils'
+
+interface MultipleImageInputProps {
+ initialUrls?:string[],
+ urls:string[]
+ onChange:(urls:string[])=>void,
+ onBlur:()=>void,
+ className?:string
+}
+
+const MultipleImageInput:FC<MultipleImageInputProps>=({
+    initialUrls,
+    urls,
+    onChange,
+    onBlur,
+    className
+})=>{
+
+    const [imageUrls, setImageUrls] = useState<string[]>(initialUrls||[""])
+
+
+
+    function handleImageChange(url:string,imageIndex:number){
+        let _imageUrls=[...imageUrls]
+        _imageUrls[imageIndex]=url
+        _imageUrls=_imageUrls.filter(imageUrl=>imageUrl!=="")
+        onChange(_imageUrls)
+        onBlur()
+        if(_imageUrls.length<4){
+            _imageUrls.push("")
+        }
+        setImageUrls(_imageUrls)
+    }
+    useEffect(()=>{
+        if(imageUrls.length<4){
+            setImageUrls([...imageUrls,""])
+        }
+    },[])
+    
+ 
+
+ return(
+    <div
+        className={cn("overflow-scroll md:no-scrollbar",className)}
+    >
+        {imageUrls.map((imageUrl,index)=>(
+            <div
+                className='w-[200px] min-w-[200px]'
+                key={imageUrl+index}
+            >
+                <ImageUploadInput
+                key={imageUrl+index}
+                defaultUrl={imageUrl===""?undefined:imageUrl}
+                width={300}
+                height={300}
+                onImageUploaded={(url)=>handleImageChange(url,index)}
+                />
+            </div>
+        ))}
+       
+    </div>
+)}
+
+export default MultipleImageInput
