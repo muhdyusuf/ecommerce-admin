@@ -3,8 +3,9 @@ import { Inter } from 'next/font/google'
 import './global.css'
 import { createServerComponentClient } from '@supabase/auth-helpers-nextjs'
 import { cookies } from 'next/headers'
-import { redirect } from 'next/navigation'
 import { Toaster } from '@/components/ui/toaster'
+import { ThemeProvider } from '@/components/ThemeProvider'
+import { cn } from '@/lib/utils'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -25,9 +26,20 @@ export default async function RootLayout({
     
   return (
     <html lang="en">
-      <body className='dark'>
+      <body 
+        className={cn("flex flex-col  min-h-[100dvh] gap-6",
+        inter.className
+      )} 
+      >
+      <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+          >
         {children}
         <Toaster/>
+        </ThemeProvider>
       </body>
     </html>
   )
