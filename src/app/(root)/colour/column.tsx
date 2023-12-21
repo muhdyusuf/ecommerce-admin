@@ -42,27 +42,21 @@ export const columns: ColumnDef<Colour>[] = [
     cell:({row})=>{
       const colour = row.original
       return(
-        <div>
-          {colour.value}
+        <div
+          className="flex gap-2 items-center"
+        >
+           <div
+            style={{
+              backgroundColor:colour.value
+            }}
+            className="h-8 w-auto aspect-square"
+          />  
+          <div>
+            {colour.value}
+          </div>
         </div>
       )
     },
-  },
-  {
-    id:"viewer",
-    cell:({row})=>{
-      const colour=row.original
-      return(
-        <div
-          style={{
-            backgroundColor:colour.value
-          }}
-          className="h-min aspect-square"
-        >
-
-        </div>
-      )
-    }
   },
   {
     accessorKey: "updatedAt",

@@ -7,6 +7,7 @@ interface MultipleImageInputProps {
  urls:string[]
  onChange:(urls:string[])=>void,
  onBlur:()=>void,
+ onLoading?:(isLoading:boolean)=>void
  className?:string
 }
 
@@ -15,11 +16,12 @@ const MultipleImageInput:FC<MultipleImageInputProps>=({
     urls,
     onChange,
     onBlur,
-    className
+    className,
+    onLoading=()=>{}
 })=>{
 
     const [imageUrls, setImageUrls] = useState<string[]>(initialUrls||[""])
-
+    const [loadings, setloadings] = useState<boolean[]>([])
 
 
     function handleImageChange(url:string,imageIndex:number){
@@ -38,6 +40,15 @@ const MultipleImageInput:FC<MultipleImageInputProps>=({
             setImageUrls([...imageUrls,""])
         }
     },[])
+
+    useEffect(()=>{
+        if(loadings.includes(true)){
+            onLoading(true)
+        }
+        else{
+            onLoading(false)
+        }
+    },[loadings])
     
  
 
@@ -56,6 +67,11 @@ const MultipleImageInput:FC<MultipleImageInputProps>=({
                 width={300}
                 height={300}
                 onImageUploaded={(url)=>handleImageChange(url,index)}
+                onLoading={(isLoading)=>{
+                    const _loading=[...loadings]
+                    _loading[index]=isLoading
+                    setloadings(_loading)
+                }}
                 />
             </div>
         ))}

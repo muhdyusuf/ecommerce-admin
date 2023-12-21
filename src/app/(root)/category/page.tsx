@@ -11,7 +11,7 @@ import { Category } from '@prisma/client'
 
 
 
-  async function getCategory(): Promise<Category[]> {
+async function getCategory(): Promise<Category[]> {
     const products=await prisma.category.findMany({
       orderBy:{
         updatedAt:"desc"
@@ -31,7 +31,7 @@ interface pageProps {
 }
 
 export async function deleteCategory(id:number){
-  "use serrver"
+  "use server"
   console.log(id)
   try{
     const res=await prisma.category.delete({

@@ -29,18 +29,11 @@ import { useForm } from "react-hook-form"
 import {z} from 'zod'
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Input } from './ui/input'
-import { Textarea } from './ui/textarea'
-import { register } from 'module'
 import { Loader2 } from 'lucide-react'
-import ImageUploadInput from './ImageUploadInput'
 
-import { getPathFromUrl } from '@/lib/utils'
-import { createServerComponentClient } from '@supabase/auth-helpers-nextjs'
-import supabase from '@/lib/supabase'
 import { DialogClose } from '@radix-ui/react-dialog'
 import { useRouter } from 'next/navigation'
 import { colourSchema } from '@/lib/validation/colour'
-import { Colour } from '@/type/colour'
 interface addColourProps {
     addColour:(data:AddColourForm)=>any
 }
@@ -60,13 +53,14 @@ const AddColourModal:FC<addColourProps>=({
       defaultValues:{
         name:"",
         value:"",
+
       }
     })
 
     const router=useRouter()
   async function onSubmit(values:AddColourForm){
     
-        try {
+      try{
            const colour=await addColour(values) 
            console.log(colour)
         } catch (error) {
@@ -110,13 +104,12 @@ const AddColourModal:FC<addColourProps>=({
    
 
     >
-      Add Billboard
+      Add Colour
     </Button>
    </DialogTrigger>
    <DialogContent>
      <DialogHeader>
-       <DialogTitle>Add Colour</DialogTitle>
-       <DialogDescription>create new colour</DialogDescription>
+       <DialogTitle>Create New Colour</DialogTitle>
        <DialogClose/>
     
      </DialogHeader>
@@ -161,6 +154,7 @@ const AddColourModal:FC<addColourProps>=({
               </FormItem>
             )}
           />
+       
         
 
     

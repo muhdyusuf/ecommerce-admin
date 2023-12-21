@@ -3,8 +3,9 @@ import { DataTable } from './data-table'
 import { columns } from './column'
 
 import prisma from '../../../../prisma/client'
-import { Button } from '@/components/ui/button'
-import AddProductModal from '@/components/AddProductModal'
+import { Button, buttonVariants } from '@/components/ui/button'
+import Link from 'next/link'
+import { cn } from '@/lib/utils'
 
 
 
@@ -120,18 +121,13 @@ const page:FC<pageProps>=async ({searchParams})=>{
       className='md:container flex justify-end flex-col'
     >
       <div>
-        <AddProductModal 
-          categories={categories}
-          colours={colours}
-          sizes={sizes}
-          >
-          <Button
-            type='button'
-            className='w-[200px] float-right'
-            >
-            Add Product
-          </Button>
-        </AddProductModal>
+        <Link
+          className={cn(buttonVariants(),"")}
+          href={`${process.env.NEXT_PUBLIC_APP_URL}/products/new`}
+        >
+          Add Product
+        </Link>
+
       </div>
       <div>
         <DataTable columns={columns} data={formattedProducts} pageCount={Math.ceil(allProductLength/10)} />

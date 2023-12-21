@@ -94,15 +94,11 @@ const AddBillboardModal:FC<addProductProps>=({
 
 
   async function handleRemoveImage() {
-    console.log(imageUrl)
     if(!imageUrl)return
     const url=getPathFromUrl(imageUrl)
-    console.log(url)
     try {
         const {data,error} = await supabase.storage.from("/ecommerce-v2").remove([url])
-        console.log(data)
     } catch (error) {
-        console.log(error)
     }
    
   }
@@ -141,7 +137,9 @@ const AddBillboardModal:FC<addProductProps>=({
    </DialogTrigger>
    <DialogContent>
      <DialogHeader>
-       <DialogTitle>Are you sure absolutely sure?</DialogTitle>
+       <DialogTitle>
+        Create New Billboard
+       </DialogTitle>
        <DialogClose
         onClick={handleRemoveImage}
        />
@@ -181,7 +179,7 @@ const AddBillboardModal:FC<addProductProps>=({
               <FormItem>
                 <FormLabel>Label</FormLabel>
                 <FormControl>
-                  <Textarea placeholder="Type your message here." {...field}/>
+                  <Textarea placeholder="Type billboard label" {...field}/>
                 </FormControl>
                 <FormMessage />
               </FormItem>

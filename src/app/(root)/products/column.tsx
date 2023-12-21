@@ -18,6 +18,7 @@ import DeleteAlertDialog from "@/components/DeleteAlertDialog"
 import { AlertDialog, AlertDialogTrigger } from "@/components/ui/alert-dialog"
 import { useState } from "react"
 import { useToast } from "@/components/ui/use-toast"
+import Image from "next/image"
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
 
@@ -39,21 +40,58 @@ export type ProductColumn={
 
 export const columns: ColumnDef<ProductColumn>[] = [
   {
-    accessorKey: "name",
-    header: "name",
-  },
-  {
-    accessorKey: "colour",
-    header: "colour",
+    accessorKey: "image",
+    header: "Image",
     cell:({row})=>(
-      <div>
-        {row.original.colour.value}
+      <div
+        className="w-[100px] h-auto aspect-square overflow-hidden"
+      >
+        <Image
+          src={row.original.imageUrls[0]}
+          width={100}
+          height={100}
+          alt={`${row.original.name}images`}
+          className="w-full h-full object-cover"
+        />
       </div>
     )
   },
   {
+    accessorKey: "name",
+    header: "Name",
+  },
+  {
+    accessorKey: "colour",
+    header: "Colour",
+    cell:({row})=>(
+      <div
+        className="flex flex-col gap-1 "
+      >
+        <div
+          className="flex flex-row gap-2"
+        >
+          <div
+            style={{
+              backgroundColor:`${row.original.colour.value}`
+            }}
+            className="w-4 h-auto aspect-square rounded-sm outline outline-[1px] outline-muted-foreground outline-offset-[2px]"
+          />
+          <p>
+            {row.original.colour.value}
+          </p>
+        </div>
+
+        <p>
+          {row.original.colour.name}
+        </p>
+
+      </div>
+     
+    )
+  },
+  {
     accessorKey: "size",
-    header: "size",
+    header: "Size",
     cell:({row})=>(
       <div>
         {row.original.size}
@@ -62,7 +100,7 @@ export const columns: ColumnDef<ProductColumn>[] = [
   },
   {
     accessorKey: "category",
-    header: "category",
+    header: "Category",
     cell:({row})=>(
       <div>
         {row.original.category}
@@ -75,6 +113,7 @@ export const columns: ColumnDef<ProductColumn>[] = [
     header: ({column})=>{
       return (
         <Button
+          className="text-start p-1 h-min"
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >

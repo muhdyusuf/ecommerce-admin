@@ -104,12 +104,14 @@ const AddCategoryModal:FC<addColourProps>=({
    
 
     >
-      Add Billboard
+      Add Category
     </Button>
    </DialogTrigger>
    <DialogContent>
      <DialogHeader>
-       <DialogTitle>Are you sure absolutely sure?</DialogTitle>
+       <DialogTitle>
+        Create New Category
+       </DialogTitle>
        <DialogClose/>
     
      </DialogHeader>

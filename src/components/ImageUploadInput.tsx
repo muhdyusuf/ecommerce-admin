@@ -10,6 +10,7 @@ import { cn, getPathFromUrl } from '@/lib/utils'
 
 interface ImageUploadInputProps {
   onImageUploaded:(url:string)=>void,
+  onLoading?:(isLoading:boolean)=>void,
   defaultUrl?:string,
   width:number,
   height:number,
@@ -21,7 +22,8 @@ const ImageUploadInput: FC<ImageUploadInputProps>=({
     defaultUrl,
     width,
     height,
-    className
+    className,
+    onLoading=()=>{}
 })=>{
    
     const [imageUrl, setImageUrl] = useState<string|undefined>(defaultUrl||undefined)
@@ -37,6 +39,7 @@ const ImageUploadInput: FC<ImageUploadInputProps>=({
             
             try {
                 setLoading(true)
+                onLoading(true)
                 if(imageUrl&&defaultUrl!==imageUrl){
                     const path=getPathFromUrl(imageUrl)
                     await supabase
@@ -48,7 +51,7 @@ const ImageUploadInput: FC<ImageUploadInputProps>=({
                 const { data, error } = await supabase
                 .storage
                 .from('ecommerce-v2')
-                .upload(`unconfirmed_images/${file.name}`,file, {
+                .upload(`unconfirmed_images/${file.name.replace(/\s/g,"_")}`,file, {
                     cacheControl: '3600',
                     upsert: true
                 })
@@ -58,7 +61,7 @@ const ImageUploadInput: FC<ImageUploadInputProps>=({
                 setImageUrl(`https://wawzxvxxzvalaeswnzuy.supabase.co/storage/v1/object/public/ecommerce-v2/${data?.path}`)
                 
                 onImageUploaded(`https://wawzxvxxzvalaeswnzuy.supabase.co/storage/v1/object/public/ecommerce-v2/${data?.path}`)
-
+                onLoading(false)
             } catch (error) {
             
             } finally{
@@ -75,6 +78,7 @@ const ImageUploadInput: FC<ImageUploadInputProps>=({
         if(!imageUrl)return
         try {
             setLoading(true)
+            onLoading(true)
             const path=getPathFromUrl(imageUrl)
             const { data, error } = await supabase
             .storage
@@ -88,6 +92,7 @@ const ImageUploadInput: FC<ImageUploadInputProps>=({
         finally{
             onImageUploaded("")
             setLoading(false)
+            onLoading(false)
         }
         
     }

@@ -34,10 +34,10 @@ export async function GET(req:NextRequest) {
         data:{product}
     },{status:200})
 }
+
 export async function PATCH(req:NextRequest) {
     const {product}=await req.json()
     const productId=req.nextUrl.pathname.split("/").at(-1)
-    console.log(productId)
     try {
         const promises=product.imageUrls.map((url:string)=>{
             if(url.search("unconfirmed_images")===-1)return url

@@ -17,11 +17,7 @@ const layout:FC<layoutProps>=async({children})=>{
  return(
     <>
         <Navbar />
-        <main
-            className='p-2 md:container'
-        >
-            {children}
-        </main>
+        {children}
     </>
 )}
 

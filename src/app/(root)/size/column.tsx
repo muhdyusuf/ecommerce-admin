@@ -19,19 +19,32 @@ import { useState } from "react"
 import { Colour } from "@/type/colour"
 import DeleteAlertDialogAction from "@/components/DeleteAlertDialogAction"
 import { deleteSize } from "./page"
+import { Size } from "@prisma/client"
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
 
-export const columns: ColumnDef<Colour>[] = [
+export const columns: ColumnDef<Size>[] = [
  
   {
     accessorKey: "name",
     header: ()=><div>Name</div>,
     cell:({row})=>{
-      const colour = row.original
+      const size = row.original
       return(
         <div>
-          {colour.name}
+          {size.name}
+        </div>
+      )
+    },
+  },
+  {
+    accessorKey: "description",
+    header: ()=><div>Description</div>,
+    cell:({row})=>{
+      const size = row.original
+      return(
+        <div>
+          {size.description}
         </div>
       )
     },
@@ -41,10 +54,10 @@ export const columns: ColumnDef<Colour>[] = [
     accessorKey: "createdAt",
     header: ()=><div>Created At</div>,
     cell:({row})=>{
-      const colour = row.original
+      const size = row.original
       return(
         <div>
-          {new Date(colour.createdAt).toDateString()}
+          {new Date(size.createdAt).toDateString()}
         </div>
       )
     },
@@ -53,7 +66,7 @@ export const columns: ColumnDef<Colour>[] = [
   {
     id: "actions",
     cell: ({ row }) => {
-      const colour = row.original
+      const size = row.original
       const [open, setOpen] = useState(false)
     
       return (
@@ -72,30 +85,23 @@ export const columns: ColumnDef<Colour>[] = [
           <DropdownMenuContent align="center">
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>
-              <Link
-                href={`${process.env.NEXT_PUBLIC_APP_URL}/products/${colour.id}`}
-                >
-                {process.env.NEXT_PUBLIC_APP_URL}
-              </Link>
-            </DropdownMenuItem>
 
             <AlertDialogTrigger asChild>
                <DropdownMenuItem>
-                  Delete colour
+                  Delete SIze
               </DropdownMenuItem>
             </AlertDialogTrigger>
 
           
 
             <DropdownMenuItem
-              onClick={() => navigator.clipboard.writeText(colour.id.toString())}
+              onClick={() => navigator.clipboard.writeText(size.id.toString())}
             >
-              Copy Product Id
+              Copy Size Id
             </DropdownMenuItem>
           </DropdownMenuContent>
           <DeleteAlertDialogAction 
-            data={{id:colour.id,name:colour.name}} 
+            data={{id:size.id,name:size.name}} 
             close={()=>setOpen(false)}
             action={deleteSize}
 

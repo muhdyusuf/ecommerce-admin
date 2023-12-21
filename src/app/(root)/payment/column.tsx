@@ -12,7 +12,8 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { MoreHorizontal } from "lucide-react"
 import { Order } from "@prisma/client"
-import { formatPrice } from "@/lib/utils"
+import { cn, formatPrice } from "@/lib/utils"
+import Link from "next/link"
 
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
@@ -22,6 +23,17 @@ export const columns: ColumnDef<Order>[] = [
   {
     accessorKey: "status",
     header: "Status",
+    cell:({row:{original:{status}}})=>(
+      <p
+      className={cn(
+        status==="paid"&&"text-green-400",
+        status==="failed"&&"text-red-400",
+        "uppercase font-black text"
+     )}
+      >
+        {status}
+      </p>
+    )
   },
   {
     accessorKey: "email",
@@ -60,8 +72,14 @@ export const columns: ColumnDef<Order>[] = [
               Copy order ID
             </DropdownMenuItem>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>View customer</DropdownMenuItem>
-            <DropdownMenuItem>View order details</DropdownMenuItem>
+            <DropdownMenuItem>
+              <Link
+                href={`${process.env.NEXT_PUBLIC_APP_URL}/payment/${order.id}`}
+                
+              >
+                View order details
+              </Link>
+            </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       )

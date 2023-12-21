@@ -57,6 +57,7 @@ const AddSizeModal:FC<addSizeProps>=({
       resolver:zodResolver(sizeSchema),
       defaultValues:{
         name:"",
+        description:""
       }
     })
 
@@ -132,6 +133,19 @@ const AddSizeModal:FC<addSizeProps>=({
                 <FormLabel>Label</FormLabel>
                 <FormControl>
                   <Input placeholder="Type your message here." {...field}/>
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="description"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Label</FormLabel>
+                <FormControl>
+                  <Textarea placeholder="Add size description" {...field}/>
                 </FormControl>
                 <FormMessage />
               </FormItem>

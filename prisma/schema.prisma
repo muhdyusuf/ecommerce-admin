@@ -39,11 +39,12 @@ model Product {
 }
 
 model Size {
-  id        Int       @id @default(autoincrement())
-  name      String
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
-  products  Product[]
+  id          Int       @id @default(autoincrement())
+  name        String
+  description String    @default("")
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  products    Product[]
 }
 
 model Category {
@@ -95,7 +96,7 @@ model Order {
   total     Int
   email     String     @default("")
   name      String     @default("")
-  orderItem CartItem[]
+  cartItem  CartItem[]
   user      User       @relation(fields: [userId], references: [id])
 }
 

@@ -10,6 +10,8 @@ export const productSchema=z.object({
         .array(z.string()).refine(arr=>arr.length>0,"Require 1 Image"),
     size:z.preprocess(val=>Number(val),z.number().positive()),
     colour:z.preprocess(val=>Number(val),z.number().positive()),
+    isFeatured:z.boolean(),
+    isArchived:z.boolean()
     
 })
 
