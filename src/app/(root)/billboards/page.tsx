@@ -1,10 +1,8 @@
+"use server"
 import {FC} from 'react'
 import { DataTable } from './data-table'
 import { columns } from './column'
-
-import { Product } from '@/type/product'
 import prisma from '../../../../prisma/client'
-import { Button } from '@/components/ui/button'
 import AddBillboardModal from '@/components/AddBillboardModal'
 import { billboardSchema } from '@/lib/validation/billboard'
 import { z } from 'zod'
@@ -29,21 +27,17 @@ interface pageProps {
 
 type BillboardForm=z.infer<typeof billboardSchema>
   
-async function addBillboard(form:BillboardForm) {
+export async function addBillboard(form:BillboardForm) {
   "use server"
-
   const temporaryPath=getPathFromUrl(form.imageUrl)
   const finalUrl="billboard_images/"+temporaryPath.split("/")[1]
-  console.log(finalUrl)
 
-  console.log(temporaryPath)
   try {
     const {data,error}=await supabase
       .storage
       .from("ecommerce-v2")
       .move(temporaryPath,finalUrl)
 
-    console.log(data)
 
     const billboard=await prisma.billboard.create({
       data:{
@@ -55,14 +49,21 @@ async function addBillboard(form:BillboardForm) {
       return billboard
     }
   } catch (error) {
-    console.log(error)
     return error
   }
   
 }
 
+export async function deleteBillboard(id:number){
+  "use server"
+  return prisma.billboard.delete({
+    where:{
+      id:id
+    }
+  })
+}
+
 const page:FC<pageProps>=async ({})=>{
-  
 
   const billboards=await prisma.billboard.findMany({
     orderBy:{
@@ -70,9 +71,6 @@ const page:FC<pageProps>=async ({})=>{
     },
     
   })
-
-  
-
 
 
  return(

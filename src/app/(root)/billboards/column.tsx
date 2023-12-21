@@ -16,10 +16,10 @@ import Link from "next/link"
 import DeleteAlertDialog from "@/components/DeleteAlertDialog"
 import { AlertDialog, AlertDialogTrigger } from "@/components/ui/alert-dialog"
 import { useState } from "react"
-import { Billboard } from "./page"
+import { Billboard, deleteBillboard } from "./page"
 import Image from "next/image"
-// This type is used to define the shape of our data.
-// You can use a Zod schema here if you want.
+import DeleteAlertDialogAction from "@/components/DeleteAlertDialogAction"
+
 
 export const columns: ColumnDef<Billboard>[] = [
   {
@@ -40,6 +40,15 @@ export const columns: ColumnDef<Billboard>[] = [
     )
   },
   {
+    accessorKey: "label",
+    header: "Label",
+    cell: ({ row }) => (
+      <div>
+        {row.original.label}
+      </div>
+    )
+  },
+  {
     accessorKey: "Date",
     header: ()=><div>Date</div>,
     cell:({row})=>{
@@ -49,13 +58,6 @@ export const columns: ColumnDef<Billboard>[] = [
           {new Date(billboard.updatedAt).toDateString()}
         </div>
       )
-    },
-  },
-  {
-    accessorKey: "label",
-    header: () => <div className="text-right">Label</div>,
-    cell: ({ row }) => {
-      return <div className="text-right font-medium">{row.original.label}</div>
     },
   },
   {
@@ -81,14 +83,7 @@ export const columns: ColumnDef<Billboard>[] = [
           <DropdownMenuContent align="center">
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>
-              <Link
-                href={`${process.env.NEXT_PUBLIC_APP_URL}/billboards/${billboard.id}`}
-                >
-                {process.env.NEXT_PUBLIC_APP_URL}
-              </Link>
-            </DropdownMenuItem>
-
+  
             <AlertDialogTrigger asChild>
                <DropdownMenuItem>
                   Delete billboard
@@ -100,10 +95,18 @@ export const columns: ColumnDef<Billboard>[] = [
             <DropdownMenuItem
               onClick={() => navigator.clipboard.writeText(billboard.id.toString())}
             >
-              Copy Product Id
+              Copy Billboard Id
             </DropdownMenuItem>
           </DropdownMenuContent>
-          {/* <DeleteAlertDialog data={billboard} close={()=>setOpen(false)}/> */}
+          <DeleteAlertDialogAction
+            data={{
+              id:billboard.id,
+              name:billboard.label
+            }}
+            close={()=>setOpen(false)}
+            action={deleteBillboard}
+          />
+
         </DropdownMenu>
        
       </AlertDialog>
