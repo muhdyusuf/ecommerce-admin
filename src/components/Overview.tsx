@@ -30,7 +30,8 @@ const Overview:FC<OverviewProps>=({
       fontSize={12}
       tickLine={false}
       axisLine={false}
-      tickFormatter={(value:number) => formatPrice(value)}
+      className="text-start"
+      tickFormatter={(value:number) =>`RM ${value}`}
     />
     <Bar dataKey="total" radius={[4, 4, 0, 0]} className="fill-primary" />
   </BarChart>

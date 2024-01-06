@@ -5,13 +5,21 @@ import Link from "next/link"
 import { cn } from "@/lib/utils"
 import { buttonVariants } from "@/components/ui/button"
 import { UserAuthForm } from "@/components/UserAuthForm"
+import { getSession } from "@/app/supabase-server"
+import { redirect } from "next/navigation"
 
 export const metadata: Metadata = {
   title: "Authentication",
   description: "Authentication forms built using the components.",
 }
 
-export default function AuthenticationPage() {
+export default async function AuthenticationPage() {
+  const session = await getSession()
+
+  if (session) {
+    return redirect(`${process.env.NEXT_PUBLIC_APP_URL}`)
+  }
+
   return (
     <main
         className="w-screen h-screen"

@@ -15,10 +15,25 @@ import {
   } from "@/components/ui/sheet"
 import { Button } from './ui/button'
 import { Menu } from 'lucide-react'
+import { redirect } from 'next/navigation'
+import SignOutButton from './SignOutButton'
+import NavbarSheet from './NavbarSheet'
 
   
 interface NavbarProps {
  
+}
+async function handleLogout(){
+    "use server"
+    const {error}=await supabase.auth.signOut()
+    console.log(error)
+    if(error){
+
+    }
+    else{
+        
+        redirect("/signIn")
+    }
 }
 
 const Navbar:FC<NavbarProps>=({})=>{
@@ -30,79 +45,7 @@ const Navbar:FC<NavbarProps>=({})=>{
        <nav
         className='md:container flex gap-6 h-full items-center justify-between w-full p-1'
        >
-            <Sheet>
-            <SheetTrigger                                                       className='md:hidden'
-                asChild
-            >
-                <Button
-
-                    variant={"ghost"}
-                >
-                    <Menu/>
-                </Button>
-            </SheetTrigger>
-            <SheetContent
-                side={"left"}
-            >
-                <SheetHeader>
-                    <SheetTitle>
-                        <Link
-                            href={"/"}
-                        >
-                            Dashboard
-                        </Link>
-                    </SheetTitle>
-                </SheetHeader>
-                <ul
-                    className='flex flex-col gap-2 mt-2'
-                >
-              
-                <li>
-                    <Link
-                        href={"/category"}
-                    >
-                        Category
-                    </Link>
-                </li>
-                <li>
-                    <Link
-                        href={"/colour"}
-                    >
-                        Colour
-                    </Link>
-                </li>
-                <li>
-                    <Link
-                        href={"/size"}
-                    >
-                        Size
-                    </Link>
-                </li>
-                <li>
-                    <Link
-                        href={"/products"}
-                    >
-                        Products
-                    </Link>
-                </li>
-                <li>
-                    <Link
-                        href={"/billboards"}
-                    >
-                        Billboard
-                    </Link>
-                </li>
-
-                <li>
-                    <Link
-                        href={"/payment"}
-                    >
-                        Order
-                    </Link>
-                </li>
-                </ul>
-            </SheetContent>
-            </Sheet>
+            <NavbarSheet/>
             <ul
                 className='hidden md:flex gap-4'
             >
@@ -151,7 +94,7 @@ const Navbar:FC<NavbarProps>=({})=>{
 
                 <li>
                     <Link
-                        href={"/payment"}
+                        href={"/order"}
                     >
                         Order
                     </Link>

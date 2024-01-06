@@ -40,7 +40,7 @@ const DashboardDeltaCard:FC<DashboardDeltaCardProps>=async({
         <div className="text-2xl font-bold">{delta>0&&"+"}{delta}</div>
         <p className="text-xs text-muted-foreground">
             {deltaPercentage?(
-                `${deltaPercentage>0&&`+`} ${deltaPercentage.toFixed(1)}% from last month`
+                `${deltaPercentage>0?`+`:""} ${deltaPercentage.toFixed(1)}% from last month`
                 ):(
                 "invalid data"
                 )

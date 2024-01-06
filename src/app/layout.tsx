@@ -6,6 +6,9 @@ import { cookies } from 'next/headers'
 import { Toaster } from '@/components/ui/toaster'
 import { ThemeProvider } from '@/components/ThemeProvider'
 import { cn } from '@/lib/utils'
+import { PropsWithChildren } from 'react'
+import { getSession } from './supabase-server'
+import { redirect } from 'next/navigation'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -15,13 +18,9 @@ export const metadata: Metadata = {
 }
 
 export default async function RootLayout({
-  children,
-}: {
-  children: React.ReactNode
-}) {
-  const supabase=createServerComponentClient({cookies})
-    const {data:{session}}=await supabase.auth.getSession()
-
+  children
+}: PropsWithChildren) {
+    
 
     
   return (

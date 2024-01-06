@@ -20,6 +20,7 @@ type SignInForm=z.infer<typeof userSignInSchema>
 interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {}
 
 export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
+
   const [isLoading, setIsLoading] = useState<boolean>(false)
     const [seePassword, setSeePassword] = useState<boolean>(false)
     const form=useForm<SignInForm>({
@@ -44,6 +45,7 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
             email:formData.email,
             password:formData.password
         })
+        console.log(error)
         
         if(!data.user){
             form.setError("email",{message:"Invalid credential"})

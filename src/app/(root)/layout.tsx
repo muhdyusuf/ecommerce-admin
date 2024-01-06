@@ -1,6 +1,8 @@
 import {ReactNode,FC} from 'react'
 import type { Metadata } from 'next'
 import Navbar from '@/components/Navbar'
+import { getSession } from '../supabase-server'
+import { redirect } from 'next/navigation'
 
 
 export const metadata: Metadata = {
@@ -13,6 +15,12 @@ interface layoutProps {
 }
 
 const layout:FC<layoutProps>=async({children})=>{
+    const session = await getSession()
+      
+    if (!session) {
+        return redirect('/signIn');
+    }
+    
     
  return(
     <>

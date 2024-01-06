@@ -74,7 +74,7 @@ export const columns: ColumnDef<Order>[] = [
             <DropdownMenuSeparator />
             <DropdownMenuItem>
               <Link
-                href={`${process.env.NEXT_PUBLIC_APP_URL}/payment/${order.id}`}
+                href={`${process.env.NEXT_PUBLIC_APP_URL}/order/${order.id}`}
                 
               >
                 View order details
