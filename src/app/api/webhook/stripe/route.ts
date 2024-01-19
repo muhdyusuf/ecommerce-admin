@@ -37,7 +37,6 @@ export async function POST(req: Request) {
   try {
     
   if(event.type==="checkout.session.completed"){
-      console.log(session?.metadata?.orderId)
       const order=await prisma.order.update({
         where:{
           id:Number(session?.metadata?.orderId)
@@ -46,7 +45,7 @@ export async function POST(req: Request) {
           status:"paid",
           address:addressString,
           phone:session?.customer_details?.phone||"",
-          email:session?.customer_email||"",
+          email:session?.customer_details?.email||"",
           name:session?.customer_details?.name||""
       },
       include:{

@@ -10,8 +10,7 @@ datasource db {
 model User {
   id        Int        @id @default(autoincrement())
   username  String
-  email     String
-  password  String
+  email     String     @unique
   createdAt DateTime   @default(now())
   cart      CartItem[]
   order     Order[]
@@ -41,8 +40,8 @@ model Product {
 model Size {
   id          Int       @id @default(autoincrement())
   name        String
-  description String    @default("")
   createdAt   DateTime  @default(now())
+  description String    @default("")
   updatedAt   DateTime  @updatedAt
   products    Product[]
 }
@@ -68,13 +67,13 @@ model CartItem {
   id        Int      @id @default(autoincrement())
   quantity  Int
   productId Int
-  userId    Int
+  userId    Int?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   orderId   Int
   order     Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
   product   Product  @relation(fields: [productId], references: [id])
-  user      User     @relation(fields: [userId], references: [id])
+  user      User?    @relation(fields: [userId], references: [id])
 }
 
 model Rating {
@@ -90,14 +89,14 @@ model Order {
   createdAt DateTime   @default(now())
   updatedAt DateTime   @updatedAt
   status    String
-  userId    Int
   phone     String     @default("")
   address   String     @default("")
   total     Int
   email     String     @default("")
   name      String     @default("")
+  userId    Int?
   cartItem  CartItem[]
-  user      User       @relation(fields: [userId], references: [id])
+  user      User?      @relation(fields: [userId], references: [id])
 }
 
 model Billboard {
