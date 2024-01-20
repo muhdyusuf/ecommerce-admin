@@ -3,25 +3,15 @@ import { NextRequest, NextResponse } from "next/server"
 import Stripe from "stripe"
 import prisma from "../../../../prisma/client"
 
-const getCorsHeaders = (origin: string) => {
-    const headers = {
+
+    const corsHeaders = {
         "Access-Control-Allow-Methods":"GET, POST, PUT, DELETE, OPTIONS",
-        "Access-Control-Allow-Headers":"Content-Type",
-        "Access-Control-Allow-Origin": `${process.env.STORE_URL}`,
+        "Access-Control-Allow-Headers":"Content-Type,Authorization",
+        "Access-Control-Allow-Origin": `${process.env.STORE_URL}||""`,
+
     };
  
-    if (!process.env.ALLOWED_ORIGIN || !origin) return headers;
-  
-    const allowedOrigins = process.env.ALLOWED_ORIGIN.split(",");
-  
-    if (allowedOrigins.includes("*")) {
-      headers["Access-Control-Allow-Origin"] = "*";
-    } else if (allowedOrigins.includes(origin)) {
-      headers["Access-Control-Allow-Origin"] = origin;
-    }
-  
-    return headers;
-  };
+    
 
 
   
@@ -29,7 +19,7 @@ const getCorsHeaders = (origin: string) => {
     return NextResponse.json(
         {},
         {
-            headers: getCorsHeaders(req.headers.get("origin") || "")
+            headers:corsHeaders
         }
     )
   }
@@ -153,7 +143,7 @@ const getCorsHeaders = (origin: string) => {
             url:session.url
             },{
                 status: 200,
-                headers: getCorsHeaders(req.headers.get("origin") || "")
+                headers:corsHeaders
             }
         )
 
@@ -169,7 +159,7 @@ const getCorsHeaders = (origin: string) => {
             }
         },{
             status: 200,
-            headers: getCorsHeaders(req.headers.get("origin") || "")
+            headers: corsHeaders
         })
         
     }
