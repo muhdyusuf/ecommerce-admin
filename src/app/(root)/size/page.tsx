@@ -8,6 +8,7 @@ import prisma from '../../../../prisma/client'
 import { Size } from '@/type/size'
 import AddSizeModal from '@/components/AddSizeModal'
 import { AddSizeForm } from '@/components/AddSizeModal'
+import { addSize } from '@/actions/size'
 
 
 
@@ -32,34 +33,7 @@ interface pageProps {
   }
 }
 
-export async function deleteSize(id:number){
-  try{
-    const res=await prisma.size.delete({
-      where:{
-        id:id
-      }
-    })
-    return res
-  }catch(error){
-    return error
-  }
 
-}
-
-export async function addSize(data:AddSizeForm) {
-  "use server"
-  try {
-    const category=prisma.size.create({
-      data:{
-        ...data
-      }
-      
-    })
-    return category
-  } catch (error) {
-    return new Error("error")
-  }
-}
   
 
 const page:FC<pageProps>=async ({searchParams})=>{

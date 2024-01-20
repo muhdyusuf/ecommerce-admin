@@ -18,9 +18,8 @@ import { AlertDialog, AlertDialogTrigger } from "@/components/ui/alert-dialog"
 import { useState } from "react"
 import { Colour } from "@/type/colour"
 import DeleteAlertDialogAction from "@/components/DeleteAlertDialogAction"
-import { deleteColour } from "./page"
-// This type is used to define the shape of our data.
-// You can use a Zod schema here if you want.
+import { deleteColour } from "@/actions/colour"
+
 
 export const columns: ColumnDef<Colour>[] = [
  

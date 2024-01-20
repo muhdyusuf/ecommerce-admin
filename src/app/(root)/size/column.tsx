@@ -11,19 +11,17 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 
-import { ArrowUpDown,MoreHorizontal } from "lucide-react"
-import Link from "next/link"
-import DeleteAlertDialog from "@/components/DeleteAlertDialog"
+import {MoreHorizontal } from "lucide-react"
 import { AlertDialog, AlertDialogTrigger } from "@/components/ui/alert-dialog"
 import { useState } from "react"
-import { Colour } from "@/type/colour"
+
 import DeleteAlertDialogAction from "@/components/DeleteAlertDialogAction"
-import { deleteSize } from "./page"
 import { Size } from "@prisma/client"
+import { deleteSize } from "@/actions/size"
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
 
-export const Columns: ColumnDef<Size>[] = [
+export const columns: ColumnDef<Size>[] = [
  
   {
     accessorKey: "name",

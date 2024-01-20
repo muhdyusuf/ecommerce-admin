@@ -11,15 +11,15 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 
-import { ArrowUpDown,MoreHorizontal } from "lucide-react"
+import {MoreHorizontal } from "lucide-react"
 import Link from "next/link"
 import { AlertDialog, AlertDialogTrigger } from "@/components/ui/alert-dialog"
 import { useState } from "react"
 import { Colour } from "@/type/category"
 import DeleteAlertDialogAction from "@/components/DeleteAlertDialogAction"
-import { deleteCategory } from "./page"
-// This type is used to define the shape of our data.
-// You can use a Zod schema here if you want.
+import { deleteCategory } from "@/actions/category"
+
+
 
 export const columns: ColumnDef<Colour>[] = [
  

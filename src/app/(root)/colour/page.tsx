@@ -6,6 +6,7 @@ import { columns } from './column'
 import prisma from '../../../../prisma/client'
 import { Colour } from '@/type/colour'
 import AddColourModal, { AddColourForm } from '@/components/AddColourModal'
+import { addColour } from '@/actions/colour'
 
 
 
@@ -30,35 +31,7 @@ interface pageProps {
   }
 }
 
-export async function deleteColour(id:number){
-  try{
-    const res=await prisma.colour.delete({
-      where:{
-        id:id
-      }
-    })
-    return res
-  }catch(error){
-    return error
-  }
 
-}
-
-export async function addColour(data:AddColourForm) {
-  "use server"
-  try {
-    const colour=await prisma.colour.create({
-      data:{
-        ...data
-      }
-      
-    })
-    return colour
-  } catch (error) {
-    return new Error("error")
-  }
-}
-  
 
 const Page:FC<pageProps>=async ({searchParams})=>{
   

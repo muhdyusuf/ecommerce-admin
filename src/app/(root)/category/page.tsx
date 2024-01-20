@@ -6,6 +6,7 @@ import { columns } from './column'
 import prisma from '../../../../prisma/client'
 import AddCategoryModal, { AddCategoryForm } from '@/components/AddCategoryModal'
 import { Category } from '@prisma/client'
+import { addCategory } from '@/actions/category'
 
 
 
@@ -30,38 +31,7 @@ interface pageProps {
   }
 }
 
-export async function deleteCategory(id:number){
-  "use server"
-  console.log(id)
-  try{
-    const res=await prisma.category.delete({
-      where:{
-        id:id
-      }
-    })
-    return res
-  }catch(error){
-    return {error:{
-      message:error
-    }}
-  }
 
-}
-
-export async function addCategory(data:AddCategoryForm) {
-  "use server"
-  try {
-    const category=await prisma.category.create({
-      data:{
-        ...data
-      }
-      
-    })
-    return category
-  } catch (error) {
-    return {error:{message:error}}
-  }
-}
   
 
 const Page:FC<pageProps>=async ({searchParams})=>{

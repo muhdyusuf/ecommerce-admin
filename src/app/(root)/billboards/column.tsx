@@ -11,15 +11,13 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 
-import { ArrowUpDown,MoreHorizontal } from "lucide-react"
-import Link from "next/link"
-import DeleteAlertDialog from "@/components/DeleteAlertDialog"
+import { MoreHorizontal } from "lucide-react"
 import { AlertDialog, AlertDialogTrigger } from "@/components/ui/alert-dialog"
 import { useState } from "react"
-import {deleteBillboard } from "./page"
 import Image from "next/image"
 import DeleteAlertDialogAction from "@/components/DeleteAlertDialogAction"
 import { Billboard } from "@prisma/client"
+import { deleteBillboard } from "@/actions/billboard"
 
 
 export const columns: ColumnDef<Billboard>[] = [
