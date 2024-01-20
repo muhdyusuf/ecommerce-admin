@@ -8,7 +8,7 @@ import prisma from "../../../../prisma/client"
   export async function OPTIONS(req:NextRequest){
     return NextResponse.json(
         {},
-        {}
+        {status:200}
     )
   }
   
