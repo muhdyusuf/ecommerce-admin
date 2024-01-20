@@ -1,18 +1,42 @@
 import { stripe } from "@/lib/stripe"
-import { NextResponse } from "next/server"
+import { NextRequest, NextResponse } from "next/server"
 import Stripe from "stripe"
 import prisma from "../../../../prisma/client"
 
-
+const getCorsHeaders = (origin: string) => {
+    const headers = {
+      "Access-Control-Allow-Methods": `${process.env.ALLOWED_METHODS}`,
+      "Access-Control-Allow-Headers": `${process.env.ALLOWED_HEADERS}`,
+      "Access-Control-Allow-Origin": `${process.env.STORE_URL}`,
+    };
+ 
+    if (!process.env.ALLOWED_ORIGIN || !origin) return headers;
+  
+    const allowedOrigins = process.env.ALLOWED_ORIGIN.split(",");
+  
+    if (allowedOrigins.includes("*")) {
+      headers["Access-Control-Allow-Origin"] = "*";
+    } else if (allowedOrigins.includes(origin)) {
+      headers["Access-Control-Allow-Origin"] = origin;
+    }
+  
+    return headers;
+  };
 
 const corsHeader={
-    "Access-Control-Allow-Origin":"*",
+    "Access-Control-Allow-Origin":process.env.STORE_URL||process.env.NEXT_PUBLIC_APP_URL||"*",
     "Access-Control-Allow-Methods":"GET, POST, PUT, DELETE, OPTIONS",
     "Access-Control-Allow-Headers":"Content-Type,Authorization",
   }
   
-  export async function OPTIONS(){
-    return NextResponse.json({},{status:200,headers:corsHeader})
+  export async function OPTIONS(req:NextRequest){
+    return NextResponse.json(
+        {},
+        {
+            status: 200,
+            headers: getCorsHeaders(req.headers.get("origin") || "")
+        }
+    )
   }
   
   export async function POST(req:Request) {
@@ -132,7 +156,12 @@ const corsHeader={
     
         return NextResponse.json({
             url:session.url
-        },{status:200,headers:corsHeader})
+            },{
+                status: 200,
+                headers: getCorsHeaders(req.headers.get("origin") || "")
+            }
+        )
+
     } catch (error) {
         await prisma.order.delete({
             where:{
@@ -143,7 +172,10 @@ const corsHeader={
             error:{
                 message:"stripe error"
             }
-        },{status:400,headers:corsHeader})
+        },{
+            status: 200,
+            headers: getCorsHeaders(req.headers.get("origin") || "")
+        })
         
     }
     
