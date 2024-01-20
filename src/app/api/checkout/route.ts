@@ -5,8 +5,8 @@ import prisma from "../../../../prisma/client"
 
 const getCorsHeaders = (origin: string) => {
     const headers = {
-      "Access-Control-Allow-Methods": `${process.env.ALLOWED_METHODS}`,
-      "Access-Control-Allow-Headers": `${process.env.ALLOWED_HEADERS}`,
+    "Access-Control-Allow-Methods":"GET, POST, PUT, DELETE, OPTIONS",
+    "Access-Control-Allow-Headers":"Content-Type,Authorization",
       "Access-Control-Allow-Origin": `${process.env.STORE_URL}`,
     };
  
@@ -23,11 +23,7 @@ const getCorsHeaders = (origin: string) => {
     return headers;
   };
 
-const corsHeader={
-    "Access-Control-Allow-Origin":process.env.STORE_URL||process.env.NEXT_PUBLIC_APP_URL||"*",
-    "Access-Control-Allow-Methods":"GET, POST, PUT, DELETE, OPTIONS",
-    "Access-Control-Allow-Headers":"Content-Type,Authorization",
-  }
+
   
   export async function OPTIONS(req:NextRequest){
     return NextResponse.json(
