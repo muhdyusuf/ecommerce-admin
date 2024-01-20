@@ -4,23 +4,11 @@ import Stripe from "stripe"
 import prisma from "../../../../prisma/client"
 
 
-    const corsHeaders = {
-        "Access-Control-Allow-Methods":"GET, POST, PUT, DELETE, OPTIONS",
-        "Access-Control-Allow-Headers":"Content-Type,Authorization",
-        "Access-Control-Allow-Origin": `${process.env.STORE_URL as string}||""`,
-
-    };
- 
-    
-
-
   
   export async function OPTIONS(req:NextRequest){
     return NextResponse.json(
         {},
-        {
-            headers:corsHeaders
-        }
+        {}
     )
   }
   
@@ -141,10 +129,7 @@ import prisma from "../../../../prisma/client"
     
         return NextResponse.json({
             url:session.url
-            },{
-                status: 200,
-                headers:corsHeaders
-            }
+            },{status: 200}
         )
 
     } catch (error) {
@@ -157,10 +142,7 @@ import prisma from "../../../../prisma/client"
             error:{
                 message:"stripe error"
             }
-        },{
-            status: 200,
-            headers: corsHeaders
-        })
+        },{status: 200})
         
     }
     
