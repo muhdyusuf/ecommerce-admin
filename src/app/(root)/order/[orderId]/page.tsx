@@ -12,7 +12,7 @@ interface pageProps {
  }
 }
 
-const page:FC<pageProps>=async({params})=>{
+const Page:FC<pageProps>=async({params})=>{
     const {orderId}=params
     const order=await prisma.order.findUnique({
       where:{
@@ -62,6 +62,7 @@ const page:FC<pageProps>=async({params})=>{
       <div>
          {order?.cartItem.map((item,index)=>(
             <div
+               key={item.id}
                className='grid grid-cols-[auto,150px,1fr] gap-4 border-b py-4'
             >
                <p
@@ -191,4 +192,4 @@ const page:FC<pageProps>=async({params})=>{
    </main>
 )}
 
-export default page
+export default Page

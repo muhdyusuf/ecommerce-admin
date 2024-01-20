@@ -151,7 +151,7 @@ export const columns: ColumnDef<ProductColumn>[] = [
   },
   {
     id: "actions",
-    cell: ({ row }) => {
+    cell: function Cell({ row }){
       const product = row.original
       const [open, setOpen] = useState(false)
       const {toast}=useToast()

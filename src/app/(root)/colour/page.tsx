@@ -3,10 +3,7 @@ import {FC} from 'react'
 import { DataTable } from './data-table'
 import { columns } from './column'
 
-import { Product } from '@/type/product'
 import prisma from '../../../../prisma/client'
-import { Button } from '@/components/ui/button'
-import AddProductModal from '@/components/AddProductModal'
 import { Colour } from '@/type/colour'
 import AddColourModal, { AddColourForm } from '@/components/AddColourModal'
 
@@ -63,9 +60,9 @@ export async function addColour(data:AddColourForm) {
 }
   
 
-const page:FC<pageProps>=async ({searchParams})=>{
+const Page:FC<pageProps>=async ({searchParams})=>{
   
-  const {page}=searchParams
+
   const colours= await getColours()
 
 
@@ -82,4 +79,4 @@ const page:FC<pageProps>=async ({searchParams})=>{
     </main>
 )}
 
-export default page
+export default Page

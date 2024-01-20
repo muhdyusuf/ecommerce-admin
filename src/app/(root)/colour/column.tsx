@@ -72,7 +72,7 @@ export const columns: ColumnDef<Colour>[] = [
   },
   {
     id: "actions",
-    cell: ({ row }) => {
+    cell: function Cell({ row }){
       const colour = row.original
       const [open, setOpen] = useState(false)
     

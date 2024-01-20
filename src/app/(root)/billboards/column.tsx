@@ -16,9 +16,10 @@ import Link from "next/link"
 import DeleteAlertDialog from "@/components/DeleteAlertDialog"
 import { AlertDialog, AlertDialogTrigger } from "@/components/ui/alert-dialog"
 import { useState } from "react"
-import { Billboard, deleteBillboard } from "./page"
+import {deleteBillboard } from "./page"
 import Image from "next/image"
 import DeleteAlertDialogAction from "@/components/DeleteAlertDialogAction"
+import { Billboard } from "@prisma/client"
 
 
 export const columns: ColumnDef<Billboard>[] = [
@@ -62,7 +63,7 @@ export const columns: ColumnDef<Billboard>[] = [
   },
   {
     id: "actions",
-    cell: ({ row }) => {
+    cell: function Cell({ row }){
       const billboard = row.original
       const [open, setOpen] = useState(false)
       

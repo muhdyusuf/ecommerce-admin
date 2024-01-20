@@ -39,7 +39,7 @@ const MultipleImageInput:FC<MultipleImageInputProps>=({
         if(imageUrls.length<4){
             setImageUrls([...imageUrls,""])
         }
-    },[])
+    },[imageUrls])
 
     useEffect(()=>{
         if(loadings.includes(true)){
@@ -48,7 +48,7 @@ const MultipleImageInput:FC<MultipleImageInputProps>=({
         else{
             onLoading(false)
         }
-    },[loadings])
+    },[loadings,onLoading])
     
  
 

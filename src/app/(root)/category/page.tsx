@@ -64,7 +64,7 @@ export async function addCategory(data:AddCategoryForm) {
 }
   
 
-const page:FC<pageProps>=async ({searchParams})=>{
+const Page:FC<pageProps>=async ({searchParams})=>{
   
   const {page}=searchParams
   const category= await getCategory()
@@ -83,4 +83,4 @@ const page:FC<pageProps>=async ({searchParams})=>{
     </main>
 )}
 
-export default page
+export default Page

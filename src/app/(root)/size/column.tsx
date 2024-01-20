@@ -23,7 +23,7 @@ import { Size } from "@prisma/client"
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
 
-export const columns: ColumnDef<Size>[] = [
+export const Columns: ColumnDef<Size>[] = [
  
   {
     accessorKey: "name",
@@ -65,7 +65,7 @@ export const columns: ColumnDef<Size>[] = [
  
   {
     id: "actions",
-    cell: ({ row }) => {
+    cell: function Cell({ row }){
       const size = row.original
       const [open, setOpen] = useState(false)
     

@@ -4,18 +4,12 @@ import { DataTable } from './data-table'
 import { columns } from './column'
 import prisma from '../../../../prisma/client'
 import AddBillboardModal from '@/components/AddBillboardModal'
-import { billboardSchema } from '@/lib/validation/billboard'
-import { z } from 'zod'
 import supabase from '@/lib/supabase'
 import { getPathFromUrl } from '@/lib/utils'
 
 
 
-export type Billboard =z.infer<typeof billboardSchema>&{
-  id:number,
-  createdAt:Date,
-  updatedAt:Date,
-}
+
 
 
 
@@ -25,9 +19,8 @@ interface pageProps {
   }
 }
 
-type BillboardForm=z.infer<typeof billboardSchema>
   
-export async function addBillboard(form:BillboardForm) {
+export async function addBillboard(form:{imageUrl:string,label:string}) {
   "use server"
   const temporaryPath=getPathFromUrl(form.imageUrl)
   const finalUrl="billboard_images/"+temporaryPath.split("/")[1]
@@ -49,7 +42,7 @@ export async function addBillboard(form:BillboardForm) {
       return billboard
     }
   } catch (error) {
-    return error
+   
   }
   
 }
@@ -63,7 +56,7 @@ export async function deleteBillboard(id:number){
   })
 }
 
-const page:FC<pageProps>=async ({})=>{
+const Page:FC<pageProps>=async ({})=>{
 
   const billboards=await prisma.billboard.findMany({
     orderBy:{
@@ -84,4 +77,4 @@ const page:FC<pageProps>=async ({})=>{
     </main>
 )}
 
-export default page
+export default Page

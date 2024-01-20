@@ -72,9 +72,9 @@ interface pageProps {
 }
   
 
-const page:FC<pageProps>=async ({searchParams})=>{
+const Page:FC<pageProps>=async ({searchParams})=>{
   
-  const {page}=searchParams
+  
   const allProductLength=await prisma.product.count()
   const products=await prisma.product.findMany({
     orderBy:{
@@ -135,4 +135,4 @@ const page:FC<pageProps>=async ({searchParams})=>{
     </main>
 )}
 
-export default page
+export default Page

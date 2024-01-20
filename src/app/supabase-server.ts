@@ -1,13 +1,11 @@
-import { createServerComponentClient } from '@supabase/auth-helpers-nextjs';
+import { createServerActionClient, createServerComponentClient } from '@supabase/auth-helpers-nextjs';
 import { cookies } from 'next/headers';
 import { cache } from 'react';
 
-export const createServerSupabaseClient = cache(() =>
-  createServerComponentClient({ cookies })
-);
-
 export async function getSession() {
-  const supabase = createServerSupabaseClient();
+  'use server'
+  const cookieStore=cookies()
+  const supabase = createServerActionClient({cookies:()=>cookieStore})
   try {
     const {
       data: { session }
@@ -20,16 +18,14 @@ export async function getSession() {
 }
 
 export async function getUserDetails() {
-  const supabase = createServerSupabaseClient();
+  'use server'
+  const cookieStore=cookies()
+  const supabase = createServerActionClient({cookies:()=>cookieStore})
   try {
-    const { data: userDetails } = await supabase
-      .from('users')
-      .select('*')
-      .single();
-    return userDetails;
+    const { data: {user} } = await supabase.auth.getUser()
+    return user
   } catch (error) {
-    console.error('Error:', error);
+    console.error('Error:', error)
     return null;
   }
 }
-
