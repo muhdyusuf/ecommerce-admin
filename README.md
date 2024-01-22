@@ -1,36 +1,145 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+<!-- Improved compatibility of back to top link: See: https://github.com/muhdyusuf/ecommerce-v2-admin/pull/73 -->
+<a name="readme-top"></a>
+<!--
+*** Thanks for checking out the Best-README-Template. If you have a suggestion
+*** that would make this better, please fork the repo and create a pull request
+*** or simply open an issue with the tag "enhancement".
+*** Don't forget to give the project a star!
+*** Thanks again! Now go create something AMAZING! :D
+-->
 
-## Getting Started
 
-First, run the development server:
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+<!-- PROJECT SHIELDS -->
+<!--
+*** I'm using markdown "reference style" links for readability.
+*** Reference links are enclosed in brackets [ ] instead of parentheses ( ).
+*** See the bottom of this document for the declaration of the reference variables
+*** for contributors-url, forks-url, etc. This is an optional, concise syntax you may use.
+*** https://www.markdownguide.org/basic-syntax/#reference-style-links
+-->
+[![Contributors][contributors-shield]][contributors-url]
+[![Forks][forks-shield]][forks-url]
+[![Stargazers][stars-shield]][stars-url]
+[![Issues][issues-shield]][issues-url]
+[![MIT License][license-shield]][license-url]
+[![LinkedIn][linkedin-shield]][linkedin-url]
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+<!-- PROJECT LOGO -->
+<br />
+<div align="center">
+  <a href="https://github.com/muhdyusuf/ecommerce-v2-admin">
+    <img src="./public/next.svg" alt="Logo" width="80" height="80">
+  </a>
 
-## Learn More
+  <h3 align="center">Ecommerce v2 Admin</h3>
 
-To learn more about Next.js, take a look at the following resources:
+  <p align="center">
+    mockup ecommerce website
+    <br />
+    <a href="https://github.com/muhdyusuf/ecommerce-v2-admin"><strong>Explore the docs »</strong></a>
+    <br />
+    <br />
+    <a href="https://ecommerce-v2-admin.vercel.app/">View Demo</a>
+    ·
+    <a href="https://github.com/muhdyusuf/ecommerce-v2-admin/issues">Report Bug</a>
+    ·
+    <a href="https://github.com/muhdyusuf/ecommerce-v2-admin/issues">Request Feature</a>
+  </p>
+</div>
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
 
-## Deploy on Vercel
+<!-- TABLE OF CONTENTS -->
+<details>
+  <summary>Table of Contents</summary>
+  <ol>
+    <li>
+      <a href="#about-the-project">About The Project</a>
+      <ul>
+        <li><a href="#built-with">Built With</a></li>
+      </ul>
+    </li>
+    <li><a href="#roadmap">Roadmap</a></li>
+    <li><a href="#license">License</a></li>
+    <li><a href="#contact">Contact</a></li>
+ 
+  </ol>
+</details>
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+
+<!-- ABOUT THE PROJECT -->
+## About The Project
+
+[![Product Name Screen Shot][product-screenshot]](https://ecommerce-v2-sooty.vercel.app)
+
+
+### Built With
+
+* [![Next][Next.js]][Next-url]
+* ![TailwindCSS](https://img.shields.io/badge/tailwindcss-%2338B2AC.svg?style=for-the-badge&logo=tailwind-css&logoColor=white)
+
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+
+
+<!-- GETTING STARTED -->
+
+<!-- ROADMAP -->
+## Roadmap
+
+- [ ] Add edit order feature
+- [ ] Add Billboard Action feature
+- [ ] Add Billboard Action feature
+
+
+
+See the [open issues](https://github.com/muhdyusuf/ecommerce-v2-admin/issues) for a full list of proposed features (and known issues).
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+
+
+<!-- LICENSE -->
+## License
+
+Distributed under the MIT License. See `LICENSE.txt` for more information.
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+
+
+<!-- CONTACT -->
+## Contact
+
+
+Project Link: [https://github.com/muhdyusuf/ecommerce-v2-admin](https://github.com/muhdyusuf/ecommerce-v2-admin)
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+
+
+
+<!-- MARKDOWN LINKS & IMAGES -->
+<!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
+[contributors-shield]: https://img.shields.io/github/contributors/muhdyusuf/ecommerce-v2-admin.svg?style=for-the-badge
+[contributors-url]: https://github.com/muhdyusuf/ecommerce-v2-admin/graphs/contributors
+[forks-shield]: https://img.shields.io/github/forks/muhdyusuf/ecommerce-v2-admin.svg?style=for-the-badge
+[forks-url]: https://github.com/muhdyusuf/ecommerce-v2-admin/network/members
+[stars-shield]: https://img.shields.io/github/stars/muhdyusuf/ecommerce-v2-admin.svg?style=for-the-badge
+[stars-url]: https://github.com/muhdyusuf/ecommerce-v2-admin/stargazers
+[issues-shield]: https://img.shields.io/github/issues/muhdyusuf/ecommerce-v2-admin.svg?style=for-the-badge
+[issues-url]: https://github.com/muhdyusuf/ecommerce-v2-admin/issues
+[license-shield]: https://img.shields.io/github/license/muhdyusuf/ecommerce-v2-admin.svg?style=for-the-badge
+[license-url]: https://github.com/muhdyusuf/ecommerce-v2-admin/blob/master/LICENSE.txt
+[linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
+[linkedin-url]: https://linkedin.com/in/othneildrew
+[product-screenshot]: ./public/screenshot.png
+[Next.js]: https://img.shields.io/badge/next.js-000000?style=for-the-badge&logo=nextdotjs&logoColor=white
+[Next-url]: https://nextjs.org/
+[React.js]: https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB
+[React-url]: https://reactjs.org/
