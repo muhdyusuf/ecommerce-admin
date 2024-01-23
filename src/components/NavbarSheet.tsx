@@ -31,20 +31,19 @@ const NavbarSheet:FC<NavbarSheetProps>=({})=>{
         <SheetContent
             side={"left"}
         >
-            <SheetHeader>
-                <SheetTitle>
-                    <Link
-                        href={"/"}
-                        onClick={()=>setOpen(false)}
-                    >
-                        Dashboard
-                    </Link>
-                </SheetTitle>
-            </SheetHeader>
+
             <ul
                 className='flex flex-col gap-2 mt-2'
             >
         
+            <li>
+                <Link
+                    href={"/"}
+                    onClick={()=>setOpen(false)}
+                >
+                    Dashboard
+                </Link>
+            </li>
             <li>
                 <Link
                     href={"/category"}

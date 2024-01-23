@@ -122,7 +122,7 @@ export default async function Home() {
   }))
   return (
     <main className="md:container space-y-4">
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
         <DashboardDeltaCard
           getXValue={()=>getSalesCountByMonth(lastMonth)}
           getYValue={()=>getSalesCountByMonth(currentMonth)}

@@ -130,9 +130,9 @@ const AddSizeModal:FC<addSizeProps>=({
             name="name"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Label</FormLabel>
+                <FormLabel>Name</FormLabel>
                 <FormControl>
-                  <Input placeholder="Type your message here." {...field}/>
+                  <Input placeholder="Enter size name" {...field}/>
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -143,7 +143,7 @@ const AddSizeModal:FC<addSizeProps>=({
             name="description"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Label</FormLabel>
+                <FormLabel>Description</FormLabel>
                 <FormControl>
                   <Textarea placeholder="Add size description" {...field}/>
                 </FormControl>

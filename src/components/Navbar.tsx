@@ -1,4 +1,4 @@
-
+'use server'
 import supabase from '@/lib/supabase'
 import Link from 'next/link'
 import {FC} from 'react'
@@ -6,18 +6,17 @@ import {FC} from 'react'
 
 import { ThemeToggle } from './ThemeToggle'
 import {
-    Sheet,
-    SheetContent,
-    SheetDescription,
-    SheetHeader,
-    SheetTitle,
-    SheetTrigger,
-  } from "@/components/ui/sheet"
-import { Button } from './ui/button'
-import { Menu } from 'lucide-react'
+    Popover,
+    PopoverContent,
+    PopoverTrigger,
+  } from "@/components/ui/popover"
 import { redirect } from 'next/navigation'
-import SignOutButton from './SignOutButton'
+
 import NavbarSheet from './NavbarSheet'
+import { getUserDetails } from '@/app/supabase-server'
+import prisma from '../../prisma/client'
+import { generateInitials } from '@/lib/utils'
+import NavbarAction from './NavbarAction'
 
   
 interface NavbarProps {
@@ -36,11 +35,18 @@ async function handleLogout(){
     }
 }
 
-const Navbar:FC<NavbarProps>=({})=>{
+const Navbar:FC<NavbarProps>=async({})=>{
+    const sessionUser=await getUserDetails()
+    const user=await prisma.user.findUnique({
+        where:{
+            email:sessionUser?.email
+        }
+    })
+
 
  return(
     <header
-        className='sticky top-0 right-0 w-full h-16 flex justify-center items-center border-b-[1px] border-muted bg-background z-[50]'
+        className='sticky top-0 left-0 w-full h-16 flex justify-center items-center border-b-[1px] border-muted bg-background z-[50]'
         >
        <nav
         className='md:container flex gap-6 h-full items-center justify-between w-full p-1'
@@ -104,9 +110,19 @@ const Navbar:FC<NavbarProps>=({})=>{
                 className='flex items-center gap-4'
             >
                 <ThemeToggle/>
-                <div
-                    className='h-8 w-auto aspect-square  rounded-full bg-red-600'
-                ></div>
+                {!!user&&(
+                <Popover>
+                    <PopoverTrigger
+                        className=''
+                    >
+                        <div>
+                            {generateInitials(user.username)}
+                        </div>
+                    </PopoverTrigger>
+                    <PopoverContent>
+                        <NavbarAction user={user}/>
+                    </PopoverContent>
+                </Popover>)}
             </div>
        </nav>
     </header>
