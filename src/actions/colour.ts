@@ -28,7 +28,9 @@ export async function deleteColour(id:number){
       })
       return colour
     } catch (error) {
-      return new Error("error")
+      return {
+        error:"error deleting colour"
+      }
     }
   }
     

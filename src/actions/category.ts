@@ -5,7 +5,6 @@ import prisma from "../../prisma/client"
 
 export async function deleteCategory(id:number){
     "use server"
-    console.log(id)
     try{
       const res=await prisma.category.delete({
         where:{
@@ -15,7 +14,7 @@ export async function deleteCategory(id:number){
       return res
     }catch(error){
       return {error:{
-        message:error
+        message:"error deleteting category"
       }}
     }
   

@@ -33,10 +33,20 @@ export async function addBillboard(form:{imageUrl:string,label:string}) {
   
   export async function deleteBillboard(id:number){
     "use server"
-    return prisma.billboard.delete({
-      where:{
-        id:id
+    
+    try {
+      const deletedBillboard=await prisma.billboard.delete({
+        where:{
+          id:id
+        }
+      })
+      if(deletedBillboard){
+        return deleteBillboard
       }
-    })
+    } catch (error) {
+      return {
+        error:"error deleting billboard"
+      }
+    }
   }
   

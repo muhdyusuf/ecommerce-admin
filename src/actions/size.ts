@@ -12,7 +12,9 @@ export async function deleteSize(id:number){
       })
       return res
     }catch(error){
-      return error
+      return {
+        error:"error deleting size"
+      }
     }
   
   }
@@ -28,6 +30,8 @@ export async function deleteSize(id:number){
       })
       return category
     } catch (error) {
-      return new Error("error")
+      return {
+        error:"error creating sizer"
+      }
     }
   }
