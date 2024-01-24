@@ -8,11 +8,11 @@ import { formatPrice, generateInitials } from "@/lib/utils"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "./ui/card"
 
 interface RecentSalesProps{
-
+  className?:string
 }
 
 
-async function RecentSales<RecentSalesProps>({}) {
+async function RecentSales({className}:RecentSalesProps) {
   const recentSales=await prisma.order.findMany({
     where:{
       status:"paid"
@@ -38,7 +38,7 @@ async function RecentSales<RecentSalesProps>({}) {
   })
 
     return (
-      <Card className="col-span-3">
+      <Card className={className}>
         <CardHeader>
           <CardTitle>Recent Sales</CardTitle>
           <CardDescription>
