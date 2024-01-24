@@ -121,34 +121,4 @@ export async function PATCH(req: NextRequest, res: NextResponse<Data>) {
    }
   
 }
-export async function DELETE(req: NextRequest, res: NextResponse<Data>) {
-    const {product}=await req.json()     
-    
-   try {
-    const {data,error}=await supabase.storage.from("ecommerce-v2").remove([
-        ...product.imageUrls
-    ])
-    
-    const _product=await prisma.product.delete({
-        where:{
-            id:product.id
-        }
-    })
 
-    if(_product){
-        return NextResponse.json({
-            data:_product
-        },{status:200})
-
-    }
-
-   } catch (error) {
-    console.log(error)
-    return NextResponse.json({
-        error:{
-            message:"server error"
-        }
-    },{status:500})
-   }
-  
-}

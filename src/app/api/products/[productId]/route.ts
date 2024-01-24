@@ -95,3 +95,44 @@ export async function PATCH(req:NextRequest) {
     }
     
 }
+export async function DELETE(req: NextRequest, res: NextResponse) {
+    
+    try {
+    const id=req.nextUrl.pathname
+    const product=await prisma.product.findUnique({
+        where:{id:Number(id)}
+    })
+    if(!product)throw new Error("invalid id")
+    
+    const {error}=await supabase.storage.from("ecommerce-v2").remove([
+        ...product.imageUrls
+    ])
+    if(error)throw new Error("error deleting product iamge")
+    
+    const _product=await prisma.product.delete({
+        where:{
+            id:product.id
+        }
+    })
+
+    if(_product){
+        return NextResponse.json({
+            data:_product
+        },{status:200})
+
+    }
+
+   } catch (error) {
+        if(error instanceof Error){
+            return NextResponse.json({
+                error:error
+            },{status:200})
+        }
+        else NextResponse.json({
+            error:{
+                message:"server error"
+            }
+        },{status:500})
+   }
+  
+}

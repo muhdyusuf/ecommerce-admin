@@ -1,3 +1,4 @@
+'use client'
 import {FC, useState} from 'react'
 import {
     AlertDialog,
@@ -12,7 +13,7 @@ import {
   } from "@/components/ui/alert-dialog"
 import { Button } from './ui/button'
 import { Product } from '@/type/product'
-import { Loader2 } from 'lucide-react'
+import { Loader2, ShieldAlert } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 
 interface DeleteAlertDialogActionsProps {
@@ -31,11 +32,9 @@ const DeleteAlertDialogAction:FC<DeleteAlertDialogActionsProps>=({data,close,act
     async function handleDelete(){
         setLoading(true)
         try {
-          const res= await action(data.id)
-          if(res){
-            setDeleted(true)
-          }
-                
+          const {error}=await action(data.id)
+          error?setDeleted(false):setDeleted(true)
+          
         } catch (error) {
             setDeleted(false)
         }
@@ -50,23 +49,26 @@ const DeleteAlertDialogAction:FC<DeleteAlertDialogActionsProps>=({data,close,act
  return(
     <AlertDialogContent>
     <AlertDialogHeader>
-        {!deleted?(
-            <>
-            <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+        
+            <AlertDialogTitle>{deleted?`Deleted`:`Are you absolutely sure?`}</AlertDialogTitle>
             <AlertDialogDescription>
-                This action cannot be undone. This will permanently delete 
-                and remove {data.name} from the database.
+                {deleted?(
+                `${data.name} deleted from the database.`
+                ):(
+                `This action cannot be undone. This will permanently delete 
+                and remove ${data.name} from the database.`)}
             </AlertDialogDescription>
-            </>
-        ):(
-            <>
-            <AlertDialogTitle>Deleted</AlertDialogTitle>
-            <AlertDialogDescription>
-                {data.name} deleted from the database.
-            </AlertDialogDescription>
-            </>
-        )}
+            
+      
     </AlertDialogHeader>
+    <div
+        className='flex gap-1 text-xs items-center'
+    >
+        <ShieldAlert
+            className='w-4 aspect-square'
+        />
+        <p>item will not deleted if any relation to product exists</p>
+    </div>
     <AlertDialogFooter>
       <AlertDialogCancel
         disabled={loading}
