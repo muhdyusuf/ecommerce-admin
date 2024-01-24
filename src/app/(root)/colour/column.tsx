@@ -13,7 +13,7 @@ import {
 
 import { ArrowUpDown,MoreHorizontal } from "lucide-react"
 import Link from "next/link"
-import DeleteAlertDialog from "@/components/DeleteAlertDialog"
+import DeleteAlertDialog from "@/app/(root)/products/DeleteAlertDialog"
 import { AlertDialog, AlertDialogTrigger } from "@/components/ui/alert-dialog"
 import { useState } from "react"
 import { Colour } from "@/type/colour"

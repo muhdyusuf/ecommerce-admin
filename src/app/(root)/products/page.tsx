@@ -110,11 +110,6 @@ const Page:FC<pageProps>=async ({searchParams})=>{
     }
   })
 
-  console.log(formattedProducts)
-  
-
-
-
 
  return(
     <main

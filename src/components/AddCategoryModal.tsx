@@ -61,10 +61,9 @@ const AddCategoryModal:FC<addColourProps>=({
   async function onSubmit(values:AddCategoryForm){
     
         try {
-           const colour=await addCategory(values) 
-           console.log(colour)
+           await addCategory(values) 
         } catch (error) {
-         console.log(error)   
+          
         }
       finally{
         setLoading(false)

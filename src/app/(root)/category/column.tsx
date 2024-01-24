@@ -57,6 +57,7 @@ export const columns: ColumnDef<Colour>[] = [
     
       return (
         <AlertDialog
+          key={category.id}
           open={open}
           onOpenChange={setOpen}
         >
@@ -71,14 +72,6 @@ export const columns: ColumnDef<Colour>[] = [
           <DropdownMenuContent align="center">
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>
-              <Link
-                href={`${process.env.NEXT_PUBLIC_APP_URL}/products/${category.id}`}
-                >
-                {process.env.NEXT_PUBLIC_APP_URL}
-              </Link>
-            </DropdownMenuItem>
-
             <AlertDialogTrigger asChild>
                <DropdownMenuItem>
                   Delete category
@@ -96,7 +89,7 @@ export const columns: ColumnDef<Colour>[] = [
           <DeleteAlertDialogAction 
             data={{id:category.id,name:category.name}} 
             close={()=>setOpen(false)}
-            action={()=>deleteCategory(category.id)}
+            action={deleteCategory}
 
           />
         </DropdownMenu>

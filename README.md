@@ -74,7 +74,7 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-[![Product Name Screen Shot][product-screenshot]](https://ecommerce-v2-sooty.vercel.app)
+[![Product Name Screen Shot][product-screenshot]](https://ecommerce-v2-admin.vercel.app/)
 
 
 ### Built With
@@ -96,10 +96,10 @@
 <!-- ROADMAP -->
 ## Roadmap
 
-- [ ] Add edit order feature
+- [ ] Add pagination
+  - [ ] Product page
+  - [ ] Order pagination
 - [ ] Add Billboard Action feature
-- [ ] Add Billboard Action feature
-
 
 
 See the [open issues](https://github.com/muhdyusuf/ecommerce-v2-admin/issues) for a full list of proposed features (and known issues).

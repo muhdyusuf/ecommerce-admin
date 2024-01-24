@@ -69,47 +69,35 @@ export async function POST(req: Request) {
   }
   else if(event.type==="checkout.session.expired"){
 
-      const order=await prisma.order.update({
+    const order=await prisma.order.findUnique({
+      where:{
+        id:Number(session?.metadata?.orderId)
+      }
+    })
+
+    if(order?.email){{
+      await prisma.order.update({
         where:{
           id:Number(session?.metadata?.orderId)
         },
         data:{
           status:"failed",
-          address:addressString,
-          phone:session?.customer_details?.phone||"",
-          email:session?.customer_email||"",
-          name:session?.customer_details?.name||""
-        },
-        include:{
-          cartItem:true
         }
       })
+    }}
+    else{
+      await prisma.order.delete({
+        where:{
+          id:Number(session?.metadata?.orderId)
+        }
+      })
+    }
 
     
   }
   
-  else if(event.type==="checkout.session.async_payment_failed"){
-    //orderId=session?.metadata?.orderId
-    //update order status in db
-    const order=await prisma.order.update({
-      where:{
-        id:Number(session?.metadata?.orderId)
-      },
-      data:{
-        status:"failed",
-        address:addressString,
-        phone:session?.customer_details?.phone||"",
-        email:session?.customer_email||"",
-        name:session?.customer_details?.name||""
-      },
-      include:{
-        cartItem:true
-      }
-    })
-    
-  }
  
-  
+
   } catch (error) {
     return NextResponse.json({message:error},{ status: 400 })
   }

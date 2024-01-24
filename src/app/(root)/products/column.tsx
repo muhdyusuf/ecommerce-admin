@@ -14,7 +14,7 @@ import { Product } from "@/type/product"
 
 import { ArrowUpDown,MoreHorizontal } from "lucide-react"
 import Link from "next/link"
-import DeleteAlertDialog from "@/components/DeleteAlertDialog"
+import DeleteAlertDialog from "./DeleteAlertDialog"
 import { AlertDialog, AlertDialogTrigger } from "@/components/ui/alert-dialog"
 import { useState } from "react"
 import { useToast } from "@/components/ui/use-toast"

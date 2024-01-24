@@ -5,11 +5,6 @@ import {FC} from 'react'
 
 
 import { ThemeToggle } from './ThemeToggle'
-import {
-    Popover,
-    PopoverContent,
-    PopoverTrigger,
-  } from "@/components/ui/popover"
 import { redirect } from 'next/navigation'
 
 import NavbarSheet from './NavbarSheet'
@@ -17,6 +12,13 @@ import { getUserDetails } from '@/app/supabase-server'
 import prisma from '../../prisma/client'
 import { generateInitials } from '@/lib/utils'
 import NavbarAction from './NavbarAction'
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuTrigger,
+  } from "@/components/ui/dropdown-menu"
+import SignOutButton from './SignOutButton'
 
   
 interface NavbarProps {
@@ -36,12 +38,9 @@ async function handleLogout(){
 }
 
 const Navbar:FC<NavbarProps>=async({})=>{
-    const sessionUser=await getUserDetails()
-    const user=await prisma.user.findUnique({
-        where:{
-            email:sessionUser?.email
-        }
-    })
+    const user=await getUserDetails()
+    if(!user)redirect("signIn")
+
 
 
  return(
@@ -107,22 +106,33 @@ const Navbar:FC<NavbarProps>=async({})=>{
                 </li>
             </ul>
             <div
-                className='flex items-center gap-4'
+                className='flex items-center justify-center gap-4'
             >
                 <ThemeToggle/>
+            
                 {!!user&&(
-                <Popover>
-                    <PopoverTrigger
-                        className=''
+                <DropdownMenu>
+                    <DropdownMenuTrigger
+                        asChild
+                        className='hidden md:grid'
                     >
-                        <div>
-                            {generateInitials(user.username)}
+                        <div
+                            className='h-8 w-auto aspect-square rounded-full bg-primary grid place-content-center uppercase'
+                        >
+                            {generateInitials(user.email||"us")}
                         </div>
-                    </PopoverTrigger>
-                    <PopoverContent>
-                        <NavbarAction user={user}/>
-                    </PopoverContent>
-                </Popover>)}
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent
+                        align='end'
+                    >
+                        <DropdownMenuItem>
+                            <SignOutButton
+                                
+                            />
+                        </DropdownMenuItem>
+                        
+                    </DropdownMenuContent>
+                </DropdownMenu>)}
             </div>
        </nav>
     </header>

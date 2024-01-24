@@ -16,6 +16,7 @@ export default function SignOutButton() {
   return (
     <Button
       onClick={handleSignOut}
+      className='w-full'
     >
       Sign out
     </Button>
