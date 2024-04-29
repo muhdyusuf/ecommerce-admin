@@ -1,15 +1,16 @@
-import { createMiddlewareClient } from "@supabase/auth-helpers-nextjs";
+
 import { NextRequest, NextResponse } from "next/server";
+import { createClient } from "./utils/supabase/middleware";
 
 export async function middleware(req:NextRequest) {
     const res=NextResponse.next()
-    const supabase=createMiddlewareClient({req,res})
+    const supabase=createClient(req)
 
     const {
         data: {
           session
         }
-      } = await supabase.auth.getSession()
+      } = await supabase.supabase.auth.getSession()
     
       if (!session) {
         return NextResponse.rewrite(new URL('/signIn', req.url))

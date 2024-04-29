@@ -5,8 +5,9 @@ import Link from "next/link"
 import { cn } from "@/lib/utils"
 import { buttonVariants } from "@/components/ui/button"
 import { UserAuthForm } from "@/components/UserAuthForm"
-import { getSession } from "@/app/supabase-server"
 import { redirect } from "next/navigation"
+import { createClient } from "@/utils/supabase/server"
+import { cookies } from "next/headers"
 
 export const metadata: Metadata = {
   title: "Authentication",
@@ -14,9 +15,11 @@ export const metadata: Metadata = {
 }
 
 export default async function AuthenticationPage() {
-  const session = await getSession()
+  const cookieStore=cookies()
+  const supabase=createClient(cookieStore)
+  const { data, error } = await supabase.auth.getSession()
 
-  if (session) {
+  if (data.session) {
     return redirect(`${process.env.NEXT_PUBLIC_APP_URL}`)
   }
 

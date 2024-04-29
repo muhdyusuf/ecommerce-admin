@@ -2,7 +2,7 @@ import {FC} from 'react'
 import prisma from '../../../../../prisma/client'
 import { cn, formatPrice } from '@/lib/utils'
 import Image from 'next/image'
-import { Button } from '@/components/ui/button'
+
 import { Copy } from 'lucide-react'
 import CopyButton from '@/components/CopyButton'
 

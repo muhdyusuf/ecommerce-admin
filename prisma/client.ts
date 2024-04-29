@@ -1,19 +1,15 @@
-import {PrismaClient} from "@prisma/client"
+import { PrismaClient } from '@prisma/client'
 
-declare global{
-    namespace NodeJS{
-        interface Global{}
-    }
+const prismaClientSingleton = () => {
+  return new PrismaClient()
 }
 
-interface CustomNodeJsGlobal extends NodeJS.Global{
-    prisma:PrismaClient
+declare global {
+  var prismaGlobal: undefined | ReturnType<typeof prismaClientSingleton>
 }
 
-declare const global:CustomNodeJsGlobal
-
-const prisma=global.prisma||new PrismaClient()
-
-if(process.env.NODE_ENV==="development")global.prisma=prisma
+const prisma = globalThis.prismaGlobal ?? prismaClientSingleton()
 
 export default prisma
+
+if (process.env.NODE_ENV !== 'production') globalThis.prismaGlobal = prisma

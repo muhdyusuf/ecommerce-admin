@@ -1,7 +1,7 @@
+'use server'
 import {
     Avatar,
     AvatarFallback,
-    AvatarImage,
   } from "@/components/ui/avatar"
 import prisma from "../../prisma/client"
 import { formatPrice, generateInitials } from "@/lib/utils"

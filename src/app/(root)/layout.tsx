@@ -1,8 +1,9 @@
 import {ReactNode,FC} from 'react'
 import type { Metadata } from 'next'
 import Navbar from '@/components/Navbar'
-import { getSession } from '../supabase-server'
 import { redirect } from 'next/navigation'
+import { createClient } from '@/utils/supabase/server'
+import { cookies } from 'next/headers'
 
 
 export const metadata: Metadata = {
@@ -15,7 +16,10 @@ interface layoutProps {
 }
 
 const layout:FC<layoutProps>=async({children})=>{
-    const session = await getSession()
+    const cookieStore=cookies()
+    const supabase=createClient(cookieStore)
+
+    const {data:{session}} = await supabase.auth.getSession()
       
     if (!session) {
         return redirect('/signIn');

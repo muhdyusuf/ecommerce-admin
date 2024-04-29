@@ -1,14 +1,12 @@
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import './global.css'
-import { createServerComponentClient } from '@supabase/auth-helpers-nextjs'
 import { cookies } from 'next/headers'
 import { Toaster } from '@/components/ui/toaster'
 import { ThemeProvider } from '@/components/ThemeProvider'
 import { cn } from '@/lib/utils'
 import { PropsWithChildren } from 'react'
-import { getSession } from './supabase-server'
-import { redirect } from 'next/navigation'
+
 
 const inter = Inter({ subsets: ['latin'] })
 

@@ -3,17 +3,18 @@
 
 import { useState } from "react"
 import { cn } from "@/lib/utils"
-import { Label } from "./ui/label"
-import { Input } from "./ui/input"
-import { Button } from "./ui/button"
+import { Label } from "../../../components/ui/label"
+import { Input } from "../../../components/ui/input"
+import { Button } from "../../../components/ui/button"
 import { Eye, EyeOff, Loader2 } from "lucide-react"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
 import { userSignInSchema } from "@/lib/validation/user"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "./ui/form"
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "../../../components/ui/form"
 import { useRouter } from "next/navigation"
 import { createClient } from "@/utils/supabase/client"
+
 
 type SignInForm=z.infer<typeof userSignInSchema>
 
@@ -34,27 +35,27 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
 
 
     const router=useRouter()
-    const supabase=createClient()
+   const supabase=createClient()
 
   async function onSubmit(formData:SignInForm) {
-    console.log(formData)
+  
     setIsLoading(true)
 
     try {
         const {data,error}=await supabase.auth.signInWithPassword({
             email:formData.email,
             password:formData.password
-        })
-        console.log(error)
+          }
+        )
+        
         
         if(!data.user){
-            form.setError("email",{message:"Invalid credential"})
-            form.setError("password",{message:"Invalid credential"})
-            return
+          form.setError("email",{message:"Invalid credential"})
+          form.setError("password",{message:"Invalid credential"})
+          return
         }
-        else{
-            console.log(data.user)
-            router.refresh()
+        else if(data.user){
+          router.refresh()
         }
     } catch (error) {
         console.log(error)
