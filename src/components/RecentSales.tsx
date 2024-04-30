@@ -29,10 +29,12 @@ async function RecentSales({className}:RecentSalesProps) {
 
   const currentMonthSalesCount=await prisma.order.count({
     where:{
-      status:"paid",
+      status:{
+        equals:"paid",
+      },
       createdAt:{
         gte:startOfTheMonth,
-      }
+      },
     },
 
   })
