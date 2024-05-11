@@ -23,7 +23,7 @@
 [![Stargazers][stars-shield]][stars-url]
 [![Issues][issues-shield]][issues-url]
 [![MIT License][license-shield]][license-url]
-[![LinkedIn][linkedin-shield]][linkedin-url]
+
 
 
 
@@ -141,7 +141,6 @@ Project Link: [https://github.com/muhdyusuf/ecommerce-v2-admin](https://github.c
 [license-shield]: https://img.shields.io/github/license/muhdyusuf/ecommerce-v2-admin.svg?style=for-the-badge
 [license-url]: https://github.com/muhdyusuf/ecommerce-v2-admin/blob/master/LICENSE.txt
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
-[linkedin-url]: https://linkedin.com/in/othneildrew
 [product-screenshot]: ./public/screenshot.png
 [Next.js]: https://img.shields.io/badge/next.js-000000?style=for-the-badge&logo=nextdotjs&logoColor=white
 [Next-url]: https://nextjs.org/
