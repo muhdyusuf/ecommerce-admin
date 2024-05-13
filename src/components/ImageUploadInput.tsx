@@ -1,12 +1,13 @@
-import {FC, useEffect, useRef, useState} from 'react'
+'use client'
+import {FC, useState} from 'react'
 import { Input } from './ui/input'
 import Image from 'next/image'
-import supabase from '@/lib/supabase'
-import { type } from 'os'
 import { Ghost, Loader2, PlusCircle, X } from 'lucide-react'
 import { Card, CardContent } from './ui/card'
 import { Button } from './ui/button'
 import { cn, getPathFromUrl } from '@/lib/utils'
+import { createClient } from '@/utils/supabase/client'
+import { randomUUID } from 'crypto'
 
 interface ImageUploadInputProps {
   onImageUploaded:(url:string)=>void,
@@ -28,6 +29,8 @@ const ImageUploadInput: FC<ImageUploadInputProps>=({
    
     const [imageUrl, setImageUrl] = useState<string|undefined>(defaultUrl||undefined)
     const [loading, setLoading] = useState(false)
+
+    const supabase=createClient()
  
  
 
@@ -44,26 +47,28 @@ const ImageUploadInput: FC<ImageUploadInputProps>=({
                     const path=getPathFromUrl(imageUrl)
                     await supabase
                     .storage
-                    .from('ecommerce-v2')
+                    .from('images')
                     .remove([path])
                     setImageUrl(undefined)
                 }
+
                 const { data, error } = await supabase
                 .storage
-                .from('ecommerce-v2')
-                .upload(`unconfirmed_images/${file.name.replace(/\s/g,"_")}`,file, {
+                .from('images')
+                .upload(`unconfirmed_images/${crypto.randomUUID()}`,file, {
                     cacheControl: '3600',
                     upsert: true
                 })
                
-                if(error) throw error   
+                if(error) console.log(error)  
+                console.log(data)  
                
-                setImageUrl(`https://wawzxvxxzvalaeswnzuy.supabase.co/storage/v1/object/public/ecommerce-v2/${data?.path}`)
+                setImageUrl(`https://ylyejdywgahqmkybovya.supabase.co/storage/v1/object/public/images/${data?.path}`)
                 
-                onImageUploaded(`https://wawzxvxxzvalaeswnzuy.supabase.co/storage/v1/object/public/ecommerce-v2/${data?.path}`)
+                onImageUploaded(`https://ylyejdywgahqmkybovya.supabase.co/storage/v1/object/public/images/${data?.path}`)
                 onLoading(false)
             } catch (error) {
-            
+                console.log(error)
             } finally{
                 setLoading(false)
             }
@@ -82,7 +87,7 @@ const ImageUploadInput: FC<ImageUploadInputProps>=({
             const path=getPathFromUrl(imageUrl)
             const { data, error } = await supabase
             .storage
-            .from('ecommerce-v2')
+            .from('images')
             .remove([path])
             setImageUrl(undefined)
 

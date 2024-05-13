@@ -1,21 +1,22 @@
 'use server'
-import supabase from "@/lib/supabase"
 import { getPathFromUrl } from "@/lib/utils"
 import prisma from "../../prisma/client"
+import { createClient } from "@/utils/supabase/client"
 
  
 export async function addBillboard(form:{imageUrl:string,label:string}) {
     "use server"
     const temporaryPath=getPathFromUrl(form.imageUrl)
-    const finalUrl="billboard_images/"+temporaryPath.split("/")[1]
-  
+    const finalUrl=temporaryPath.replace("unconfirmed_images","images")
+    const supabase=createClient()
+
     try {
       const {data,error}=await supabase
         .storage
-        .from("ecommerce-v2")
+        .from("images")
         .move(temporaryPath,finalUrl)
   
-  
+      
       const billboard=await prisma.billboard.create({
         data:{
           label:form.label,

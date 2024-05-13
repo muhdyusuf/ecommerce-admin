@@ -1,7 +1,5 @@
 import { getUserDetails } from '@/app/supabase-server'
 import { User } from '@prisma/client'
-import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
-import Link from 'next/link'
 import {FC} from 'react'
 import SignOutButton from './SignOutButton'
 

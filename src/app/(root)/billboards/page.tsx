@@ -5,6 +5,7 @@ import { columns } from './column'
 import prisma from '../../../../prisma/client'
 import AddBillboardModal from '@/components/AddBillboardModal'
 import { addBillboard } from '@/actions/billboard'
+import { randomUUID } from 'crypto'
 
 
 
@@ -34,7 +35,8 @@ const Page:FC<pageProps>=async ({})=>{
     <main
       className='md:container'
     >
-      <AddBillboardModal addBillboard={addBillboard}/>
+      <AddBillboardModal 
+      addBillboard={addBillboard}/>
       <div>
         <DataTable columns={columns} data={billboards}/>
       </div>

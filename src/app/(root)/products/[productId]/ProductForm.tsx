@@ -30,6 +30,7 @@ import MultipleImageInput from '@/components/MultipleImageInput'
 import { z } from 'zod'
 import { useToast } from '@/components/ui/use-toast'
 import { useRouter } from 'next/navigation'
+import { revalidatePath } from 'next/cache'
 
 type ProductForm=z.infer<typeof productSchema>
 
@@ -110,10 +111,10 @@ const ProductForm:FC<ProductFormProps>=({product,categories,sizes,colours,id})=>
       
    }
    async function addProduct(data:ProductForm) {
-    console.log(data)
+ 
     const filteredImageUrls=form.getValues("imageUrls").filter(url=>url!=="")
     
-    console.log(filteredImageUrls)
+    
 
     setLoading(true)
     
@@ -140,8 +141,8 @@ const ProductForm:FC<ProductFormProps>=({product,categories,sizes,colours,id})=>
       }
       finally{
         form.reset()
-        // router.push(`${process.env.NEXT_PUBLIC_APP_URL}/products`)
         setLoading(false)
+      
        
       }
     

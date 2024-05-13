@@ -4,30 +4,35 @@ import { NextRequest, NextResponse } from 'next/server'
 import { productSchema } from '@/lib/validation/product'
 import { ZodError } from 'zod'
 import { createUrlFromPath, getPathFromUrl } from '@/lib/utils'
-import supabase from '@/lib/supabase'
+import { createClient } from "@/utils/supabase/server";
+import { cookies } from "next/headers";
+import { revalidatePath } from 'next/cache'
+
+
 
 interface Data {}
 
 export async function POST(req: NextRequest, res: NextResponse<Data>) {
     const {product}=await req.json()
-   
+    const cookieStore=cookies()
+    const supabase=createClient(cookieStore)
    try {
     productSchema.parse(product)
 
     const promises=product.imageUrls.map((url:string)=>{
         if(url.search("unconfirmed_images")===-1)return url
         const oldPath=getPathFromUrl(url)
-        const newPath=oldPath.replace("unconfirmed_images","product_images")
+        const newPath=oldPath.replace("unconfirmed_images","images")
         return new Promise(async(resolve,reject)=>{
             const {data,error}=await supabase
             .storage
-            .from("ecommerce-v2")
+            .from("images")
             .move(oldPath,newPath)
 
             if(error){
                 await supabase
                 .storage
-                .from('avatars')
+                .from('images')
                 .remove([oldPath])
             }
             resolve(createUrlFromPath(newPath))
@@ -67,6 +72,7 @@ export async function POST(req: NextRequest, res: NextResponse<Data>) {
         }
         
     })
+    revalidatePath("/products")
   
     return NextResponse.json({
         data:_product
@@ -87,6 +93,8 @@ export async function POST(req: NextRequest, res: NextResponse<Data>) {
 
 
 export async function PATCH(req: NextRequest, res: NextResponse<Data>) {
+    const cookieStore=cookies()
+const supabase=createClient(cookieStore)
     const {product}=await req.json()
     console.log(product)
     if(!productSchema.safeParse(product).success)return NextResponse.json({

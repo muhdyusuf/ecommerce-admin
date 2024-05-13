@@ -34,13 +34,12 @@ import { register } from 'module'
 import { Loader2 } from 'lucide-react'
 import ImageUploadInput from './ImageUploadInput'
 import { billboardSchema } from '@/lib/validation/billboard'
-import { Billboard } from '@prisma/client'
 
 import { getPathFromUrl } from '@/lib/utils'
-import { createServerComponentClient } from '@supabase/auth-helpers-nextjs'
-import supabase from '@/lib/supabase'
 import { DialogClose } from '@radix-ui/react-dialog'
 import { useRouter } from 'next/navigation'
+import { createClient } from '@/utils/supabase/client'
+
 interface addProductProps {
     addBillboard:(data:AddBillboardForm)=>any
 }
@@ -51,6 +50,7 @@ const AddBillboardModal:FC<addProductProps>=({
     addBillboard
 })=>{
 
+  const supabase=createClient()
   const [loading, setLoading] = useState(false)
   const [imageUrl,setImageUrl]=useState<string>("")
   const [open,setOpen]=useState<boolean>(false)

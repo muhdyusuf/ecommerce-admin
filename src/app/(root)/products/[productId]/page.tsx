@@ -2,8 +2,7 @@
 import {FC} from 'react'
 import prisma from '../../../../../prisma/client'
 
-import { Card } from '@/components/ui/card'
-import { Product } from '@/type/product'
+
 import ProductForm from './ProductForm'
 import { redirect } from 'next/navigation'
 

@@ -1,5 +1,4 @@
 'use server'
-import supabase from '@/lib/supabase'
 import Link from 'next/link'
 import {FC} from 'react'
 
@@ -19,6 +18,8 @@ import {
     DropdownMenuTrigger,
   } from "@/components/ui/dropdown-menu"
 import SignOutButton from './SignOutButton'
+import { createClient } from '@/utils/supabase/server'
+import { cookies } from 'next/headers'
 
   
 interface NavbarProps {
@@ -26,6 +27,8 @@ interface NavbarProps {
 }
 async function handleLogout(){
     "use server"
+    const cookieStore=cookies()
+    const supabase=createClient(cookieStore)
     const {error}=await supabase.auth.signOut()
     console.log(error)
     if(error){

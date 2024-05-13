@@ -55,7 +55,7 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
           return
         }
         else if(data.user){
-          router.refresh()
+          router.push("/")
         }
     } catch (error) {
         console.log(error)
